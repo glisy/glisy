@@ -231,7 +231,7 @@ struct vec3 {
 #define vec3_string(a) (const char *) ({              \
   char str[BUFSIZ];                                   \
   memset(str, 0, BUFSIZ);                             \
-  sprintf(str, "vec2(%g, %g, %g)", a.x, a.y, a.z);    \
+  sprintf(str, "vec3(%g, %g, %g)", a.x, a.y, a.z);    \
   (strdup(str));                                      \
 })
 #endif
