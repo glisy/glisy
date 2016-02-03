@@ -18,8 +18,8 @@
  */
 
 #include <glisy/gl.h>
-#include <glisy/events.h>
-#include <glisy/window.h>
+#include <glisy/mesh.h>
+#include <glisy/shader.h>
 #include <glisy/program.h>
 #include <glisy/context.h>
 #include <glisy/renderer.h>
@@ -52,5 +52,5 @@ glisy_terminate (void);
 void
 glisy_render (const glisy_renderer,
               const glisy_scene,
-              const glisy_camera_perspective);
+              const glisy_perspective_camera);
 #endif

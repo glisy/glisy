@@ -63,6 +63,6 @@ glisy_context_use (glisy_context *, const void *);
  */
 
 int
-glisy_context_should_update (const glisy_context);
+glisy_context_should_update (glisy_context *);
 
 #endif

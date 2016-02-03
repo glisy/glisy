@@ -1,8 +1,8 @@
 #ifndef GLISY_CAMERA_PERSPECTIVE_H
 #define GLISY_CAMERA_PERSPECTIVE_H
 
-typedef struct glisy_camera_perspective glisy_camera_perspective;
-struct glisy_camera_perspective {
+typedef struct glisy_perspective_camera glisy_perspective_camera;
+struct glisy_perspective_camera {
 
   /**
    * Vertical camera field of view in degrees.

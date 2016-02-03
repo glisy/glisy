@@ -1,6 +1,5 @@
 ## Source files
 SRC += $(wildcard src/*.c)
-SRC += $(wildcard src/math/*.c)
 
 ## Source objects
 OBJS := $(SRC:.c=.o)

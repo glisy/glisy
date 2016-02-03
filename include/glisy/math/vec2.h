@@ -36,21 +36,24 @@ struct vec2 {
  */
 
 #define vec2_sub vec2_subtract
-#define vec2_subtract(a, b) ((vec2) {(a.x - b.x), (a.y - b.y)})
+#define vec2_subtract(a, b) ((vec2) {(a.x - b.x), \
+                                     (a.y - b.y)})
 
 /**
  * Multiply two vec2.
  */
 
 #define vec2_mul vec2_multiply
-#define vec2_multiply(a, b) ((vec2) {(a.x * b.x), (a.y * b.y)})
+#define vec2_multiply(a, b) ((vec2) {(a.x * b.x), \
+                                     (a.y * b.y)})
 
 /**
  * Divide two vec2 a by vec2 b
  */
 
 #define vec2_div vec2_divide
-#define vec2_divide(a, b) ((vec2) {(a.x / b.x), (a.y / b.y)})
+#define vec2_divide(a, b) ((vec2) {(a.x / b.x), \
+                                   (a.y / b.y)})
 
 /**
  * Copy vec2 b into vec2 a
@@ -78,25 +81,29 @@ struct vec2 {
  * Add two vectors together.
  */
 
-#define vec2_add(a, b) ((vec2) {(a.x + b.x), (a.y + b.y)})
+#define vec2_add(a, b) ((vec2) {(a.x + b.x), \
+                                (a.y + b.y)})
 
 /**
  * Returns the maximum of two vec2 inputs.
  */
 
-#define vec2_max(a, b) ((vec2) {fmaxf(a.x, b.x), fmaxf(a.y, b.y)})
+#define vec2_max(a, b) ((vec2) {fmaxf(a.x, b.x), \
+                                fmaxf(a.y, b.y)})
 
 /**
  * Returns the minimum of two vec2 inputs.
  */
 
-#define vec2_min(a, b) ((vec2) {fminf(a.x, b.x), fminf(a.y, b.y)})
+#define vec2_min(a, b) ((vec2) {fminf(a.x, b.x), \
+                                fminf(a.y, b.y)})
 
 /**
  * Scale a vec2 by a scalar number.
  */
 
-#define vec2_scale(a, s) ((vec2) {a.x * s, a.y * s})
+#define vec2_scale(a, s) ((vec2) {(a.x * s), \
+                                  (a.y * s)})
 
 /**
  * Calculates the Euclidean distance for a vec2.
@@ -117,16 +124,14 @@ struct vec2 {
  */
 
 #define vec2_length(a) (float) (       \
-  sqrt(pow(a.x, 2) + pow(a.y, 2))      \
+  sqrt(powf(a.x, 2) + powf(a.y, 2))    \
 )
 
 /**
  * Calculates the squard length of a vec2.
  */
 
-#define vec2_length_squared(a) (float) (         \
-  pow(a.x, 2) + pow(a.y, 2)                      \
-)
+#define vec2_length_squared(a) (float) (powf(a.x, 2) + powf(a.y, 2))
 
 /**
  * Returns the negation of a vec2.
@@ -186,7 +191,7 @@ struct vec2 {
 #define vec2_random(scale) (vec2) ({             \
   srand((unsigned int) time(NULL));              \
   float rad = 2.0 * M_PI * rand();               \
-  (vec2(cos(rad) * scale, sin(rad) * scale));    \
+  (vec2(cosf(rad) * scale, sinf(rad) * scale));    \
 })
 
 /**

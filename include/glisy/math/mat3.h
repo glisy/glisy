@@ -241,6 +241,10 @@ struct mat3 {
        (1 - xx - yy));                           \
 }))
 
+/**
+ * Calculates Frobenius norm mat3 a.
+ */
+
 #define mat3_frob(a) (float) sqrt(     \
   powf(a.m11, 2.0) +                   \
   powf(a.m12, 2.0) +                   \
@@ -259,8 +263,8 @@ struct mat3 {
 
 #define mat3_string(a) (const char *) ({                   \
   char str[BUFSIZ];                                        \
-  mat3 b; \
-  mat3_copy(b, a); \
+  mat3 b;                                                  \
+  mat3_copy(b, a);                                         \
   memset(str, 0, BUFSIZ);                                  \
   sprintf(str, "mat3(%f, %f, %f, %f, %f, %f, %f, %f, %f)", \
                b.m11, b.m12, b.m13,                        \
