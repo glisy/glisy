@@ -18,11 +18,6 @@ main (void) {
   glisy_context_use(&ctx, &data);
   glisy_context_init(&ctx);
 
-  // ensure defaults were used
-  assert(ctx.window.height == GLISY_DEFAULT_WINDOW_HEIGHT);
-  assert(ctx.window.width == GLISY_DEFAULT_WINDOW_WIDTH);
-  assert(0 == strcmp(ctx.name, ctx.window.name));
-
   assert(id == ((data_t *) ctx.data)->id);
   assert(glisy_context_should_update(&ctx));
   return 0;

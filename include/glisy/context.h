@@ -1,8 +1,6 @@
 #ifndef GLISY_CONTEXT_H
 #define GLISY_CONTEXT_H
 
-#include <glisy/window.h>
-#include <glisy/events.h>
 #include <glisy/program.h>
 
 /**
@@ -17,18 +15,6 @@ struct glisy_context {
    */
 
   glisy_program program;
-
-  /**
-   * glisy window interface.
-   */
-
-  glisy_window window;
-
-  /**
-   * glisy event manager.
-   */
-
-  glisy_events events;
 
   /**
    * Optional program name.

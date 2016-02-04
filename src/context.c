@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <glisy/gl.h>
 #include <glisy/context.h>

@@ -1,4 +1,3 @@
-
 #include <string.h>
 #include <glisy/gl.h>
 #include <glisy/shader.h>
