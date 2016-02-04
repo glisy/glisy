@@ -4,7 +4,7 @@ TESTS := $(SRC:.c=)
 CFLAGS += -I../../include
 CFLAGS += -std=c99
 CFLAGS += -Wall
-CFLAGS += -lglfw3
+#CFLAGS += -lglfw3
 
 all: $(TESTS)
 $(TESTS): $(LIB)

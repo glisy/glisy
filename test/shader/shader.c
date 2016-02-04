@@ -1,13 +1,19 @@
-
+#include <assert.h>
 #include <glisy/glisy.h>
 
-#define VERTEX ""
+const char *vertexSource =
+  ""
+;
 
-#define FRAGMENT ""
+const char *fragmentSource =
+  ""
+;
 
 int
 main (void) {
-  glisy_shader shader;
-  glisy_shader_init(shader, VERTEX, FRAGMENT);
+  glisy_shader vertex;
+  glisy_shader fragment;
+  assert(glisy_shader_init(&vertex, GL_VERTEX_SHADER, vertexSource));
+  assert(glisy_shader_init(&fragment, GL_FRAGMENT_SHADER, fragmentSource));
   return 0;
 }
