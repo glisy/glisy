@@ -1,6 +1,10 @@
 #ifndef GLISY_H
 #define GLISY_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * math.
  */
@@ -19,6 +23,7 @@
 
 #include <glisy/gl.h>
 #include <glisy/mesh.h>
+#include <glisy/scene.h>
 #include <glisy/shader.h>
 #include <glisy/program.h>
 #include <glisy/context.h>
@@ -53,4 +58,8 @@ void
 glisy_render (const glisy_renderer,
               const glisy_scene,
               const glisy_perspective_camera);
+
+#ifdef __cplusplus
+}
+#endif
 #endif

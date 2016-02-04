@@ -2,6 +2,7 @@
 #define GLISY_SHADER_H
 
 #include <stdio.h>
+#include <glisy/gl.h>
 
 #define GLISY_GLSL_SHADER_HEADER                           \
   "uniform mat3 gl_NormalMatrix;"                          \
@@ -27,12 +28,12 @@
 
 typedef struct glisy_shader glisy_shader;
 struct glisy_shader {
-  const unsigned char source[BUFSIZ];
-  unsigned int type;
+  char source[BUFSIZ];
+  GLuint type;
+  GLuint id;
 };
 
-
-int
-glisy_shader_init (glisy_shader, const char *, const char *);
+GLboolean
+glisy_shader_init (glisy_shader *shader, GLuint type, const char *source);
 
 #endif
