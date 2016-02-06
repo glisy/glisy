@@ -160,6 +160,24 @@ struct mat2 {
 )
 
 /**
+ * Adds mat2 a and mat2 b.
+ */
+
+#define mat2_add(a, b) ((mat2) {       \
+  a.m11 + b.m11, a.m12 + b.m12,        \
+  a.m21 + b.m21, b.m22 + b.m22         \
+})
+
+/**
+ * Subtract mat2 b from mat2 a.
+ */
+
+#define mat2_subtract(a, b) ((mat2) {  \
+  a.m11 - b.m11, a.m12 - b.m12,        \
+  a.m21 - b.m21, b.m22 - b.m22         \
+})
+
+/**
  * Returns a string representation of mat2 a.
  */
 

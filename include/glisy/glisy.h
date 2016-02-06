@@ -6,22 +6,11 @@ extern "C" {
 #endif
 
 /**
- * math.
- */
-
-#include <glisy/math/vec2.h>
-#include <glisy/math/vec3.h>
-#include <glisy/math/vec4.h>
-#include <glisy/math/mat2.h>
-#include <glisy/math/mat3.h>
-#include <glisy/math/mat4.h>
-#include <glisy/math/quat.h>
-
-/**
- * core.
+ * glisy api
  */
 
 #include <glisy/gl.h>
+#include <glisy/math.h>
 #include <glisy/mesh.h>
 #include <glisy/scene.h>
 #include <glisy/shader.h>

@@ -68,7 +68,7 @@ struct mat3 {
 })
 
 /**
- * Calculates and sets inverse for
+ * Calculates and returns  inverse for
  * mat3 a.
  */
 
@@ -83,15 +83,15 @@ struct mat3 {
   float det = a11 * b11 + a12 * b21 + a13 * b31; \
   if (det) {                                     \
     det = 1.0 / det;                             \
-    (b.m11 = det * b11);                         \
-    (b.m12 = det * (-a33 * a12 + a13 * a32));    \
-    (b.m13 = det * (a23 * a12 - a13 * a22));     \
-    (b.m21 = det * b21);                         \
-    (b.m22 = det * (a33 * a11 - a13 * a31));     \
-    (b.m23 = det * (-a23 * a11 + a13 * a21));    \
-    (b.m31 = det * b31);                         \
-    (b.m32 = det * (-a32 * a11 + a12 * a31));    \
-    (b.m33 = det * (a22 * a11 - a12 * a21));     \
+    b.m11 = (det * b11);                         \
+    b.m12 = (det * (-a33 * a12 + a13 * a32));    \
+    b.m13 = (det * (a23 * a12 - a13 * a22));     \
+    b.m21 = (det * b21);                         \
+    b.m22 = (det * (a33 * a11 - a13 * a31));     \
+    b.m23 = (det * (-a23 * a11 + a13 * a21));    \
+    b.m31 = (det * b31);                         \
+    b.m32 = (det * (-a32 * a11 + a12 * a31));    \
+    b.m33 = (det * (a22 * a11 - a12 * a21));     \
   }                                              \
   (b);                                           \
 })
@@ -240,6 +240,26 @@ struct mat3 {
        (zy - wx),                                \
        (1 - xx - yy));                           \
 }))
+
+/**
+ * Adds mat3 a and mat3 b.
+ */
+
+#define mat3_add(a, b) ((mat3) {                 \
+  a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13,   \
+  a.m21 + b.m21, b.m22 + b.m22, a.m23 + b.m23,   \
+  a.m31 + b.m31, b.m32 + b.m32, a.m33 + b.m33    \
+})
+
+/**
+ * Subtract mat3 b from mat3 a.
+ */
+
+#define mat3_subtract(a, b) ((mat3) {            \
+  a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13,   \
+  a.m21 - b.m21, b.m22 - b.m22, a.m23 - b.m23,   \
+  a.m31 - b.m31, b.m32 - b.m32, a.m33 - b.m33    \
+})
 
 /**
  * Calculates Frobenius norm mat3 a.
