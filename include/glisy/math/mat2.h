@@ -12,55 +12,55 @@ struct mat2 {
 };
 
 /**
- * mat2 initializer.
+ * mat2 initializers.
  */
 
-#define mat2(m11, m12, m21, m22) ((mat2) {m11, m12, m21, m22})
-#define mat2_create() mat2(1, 0, 0, 1)
+#define mat2_create() mat2(1, 0, \
+                           0, 1)
+
+#define mat2(m11, m12, m21, m22) ((mat2) {m11, m12, \
+                                          m21, m22})
 
 /**
  * Clones and returns mat2 a.
  */
 
-#define mat2_clone(a) (mat2) {a.m11, a.m12, a.m21, a.m22}
+#define mat2_clone(a) ((mat2) {a.m11, a.m12, \
+                               a.m21, a.m22})
 
 /**
  * Copies mat2 b into mat2 a.
  */
 
-#define mat2_copy(a, b) (mat2) ({      \
-  mat2 *tmp = &a;                      \
-  (tmp->m11 = b.m11);                  \
-  (tmp->m12 = b.m12);                  \
-  (tmp->m21 = b.m21);                  \
-  (tmp->m22 = b.m22);                  \
-  (*tmp);                              \
+#define mat2_copy(a, b) (mat2) ({         \
+  mat2 *tmp = &a;                         \
+  (tmp->m11 = b.m11), (tmp->m12 = b.m12); \
+  (tmp->m21 = b.m21), (tmp->m22 = b.m22); \
+  (*tmp);                                 \
 })
 
 /**
  * Sets an identity for mat2 a.
  */
 
-#define mat2_identity(a) (mat2) ({     \
-  mat2 *tmp = &a;                      \
-  (tmp->m11 = 1);                      \
-  (tmp->m12 = 0);                      \
-  (tmp->m21 = 0);                      \
-  (tmp->m22 = 1);                      \
-  (*tmp);                              \
+#define mat2_identity(a) (mat2) ({ \
+  mat2 *tmp = &a;                  \
+  (tmp->m11 = 1), (tmp->m12 = 0);  \
+  (tmp->m21 = 0), (tmp->m22 = 1);  \
+  (*tmp);                          \
 })
 
 /**
  * Transposes mat2 a.
  */
 
-#define mat2_transpose(a) (mat2) ({    \
-  mat2(a.m11, a.m21, a.m12, a.m22);    \
+#define mat2_transpose(a) (mat2) ({ \
+  mat2(a.m11, a.m21,                \
+       a.m12, a.m22);               \
 })
 
 /**
- * Calculates and sets inverse for
- * mat2 a.
+ * Calculates and sets inverse for mat2 a.
  */
 
 #define mat2_invert(a) (mat2) ({       \
@@ -100,7 +100,25 @@ struct mat2 {
 })
 
 /**
- * Returns the product of mat2 a and mat2 b.
+ * Add mat2 a and mat2 b.
+ */
+
+#define mat2_add(a, b) ((mat2) {       \
+  a.m11 + b.m11, a.m12 + b.m12,        \
+  a.m21 + b.m21, b.m22 + b.m22         \
+})
+
+/**
+ * Subtract mat2 b from mat2 a.
+ */
+
+#define mat2_subtract(a, b) ((mat2) {  \
+  a.m11 - b.m11, a.m12 - b.m12,        \
+  a.m21 - b.m21, b.m22 - b.m22         \
+})
+
+/**
+ * Multiply mat2 a and mat2 b.
  */
 
 #define mat2_multiply(a, b) ((mat2) { \
@@ -124,21 +142,21 @@ struct mat2 {
 }))
 
 /**
- * Scale mat2 a by vec2 b.
- */
-
-#define mat2_scale(a, b) ((mat2) {     \
-  (a.m11 * b.x), (a.m12 * b.x),        \
-  (a.m21 * b.y), (a.m22 * b.y)         \
-})
-
-/**
  * Creates a mat2 from rotation rad.
  */
 
 #define mat2_from_rotation(rad) ((mat2) {   \
   cosf(rad), sinf(rad),                     \
   -sinf(rad), cosf(rad)                     \
+})
+
+/**
+ * Scale mat2 a by vec2 b.
+ */
+
+#define mat2_scale(a, b) ((mat2) {     \
+  (a.m11 * b.x), (a.m12 * b.x),        \
+  (a.m21 * b.y), (a.m22 * b.y)         \
 })
 
 /**
@@ -160,24 +178,6 @@ struct mat2 {
 )
 
 /**
- * Adds mat2 a and mat2 b.
- */
-
-#define mat2_add(a, b) ((mat2) {       \
-  a.m11 + b.m11, a.m12 + b.m12,        \
-  a.m21 + b.m21, b.m22 + b.m22         \
-})
-
-/**
- * Subtract mat2 b from mat2 a.
- */
-
-#define mat2_subtract(a, b) ((mat2) {  \
-  a.m11 - b.m11, a.m12 - b.m12,        \
-  a.m21 - b.m21, b.m22 - b.m22         \
-})
-
-/**
  * Returns a string representation of mat2 a.
  */
 
@@ -188,4 +188,5 @@ struct mat2 {
                a.m11, a.m12, a.m21, a.m22);      \
   (strdup(str));                                 \
 })
+
 #endif

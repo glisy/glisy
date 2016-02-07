@@ -31,4 +31,5 @@ glisy_renderer_size (const glisy_renderer, int, int);
 
 void
 glisy_renderer_update (const glisy_renderer);
+
 #endif

@@ -16,7 +16,7 @@ struct quat {
 };
 
 /**
- * quat initializer.
+ * quat initializers.
  */
 
 #define quat(x, y, z, w) (quat) {x, y, z, w}

@@ -13,12 +13,13 @@ struct mat3 {
 };
 
 /**
- * mat3 initializer.
+ * mat3 initializers.
  */
 
 #define mat3_create() mat3(1,0,0, \
                            0,1,0, \
                            0,0,1)
+
 #define mat3(m11, m12, m13, \
              m21, m22, m23, \
              m31, m32, m33) ((mat3) {m11, m12, m13, \
@@ -61,15 +62,14 @@ struct mat3 {
  * Transposes mat3 a.
  */
 
-#define mat3_transpose(a) (mat3) ({    \
-  mat3(a.m11, a.m21, a.m31,            \
-       a.m12, a.m22, a.m32,            \
-       a.m13, a.m23, a.m33);           \
+#define mat3_transpose(a) (mat3) ({ \
+  mat3(a.m11, a.m21, a.m31,         \
+       a.m12, a.m22, a.m32,         \
+       a.m13, a.m23, a.m33);        \
 })
 
 /**
- * Calculates and returns  inverse for
- * mat3 a.
+ * Calculates and returns inverse for mat3 a.
  */
 
 #define mat3_invert(a) (mat3) ({                 \
@@ -128,7 +128,27 @@ struct mat3 {
 })
 
 /**
- * Returns the product of mat3 a and mat3 b.
+ * Add mat3 a and mat3 b.
+ */
+
+#define mat3_add(a, b) ((mat3) {                 \
+  a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13,   \
+  a.m21 + b.m21, b.m22 + b.m22, a.m23 + b.m23,   \
+  a.m31 + b.m31, b.m32 + b.m32, a.m33 + b.m33    \
+})
+
+/**
+ * Subtract mat3 b from mat3 a.
+ */
+
+#define mat3_subtract(a, b) ((mat3) {            \
+  a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13,   \
+  a.m21 - b.m21, b.m22 - b.m22, a.m23 - b.m23,   \
+  a.m31 - b.m31, b.m32 - b.m32, a.m33 - b.m33    \
+})
+
+/**
+ * multiply mat3 a and mat3 b.
  */
 
 #define mat3_multiply(a, b) ((mat3) mat3(          \
@@ -143,18 +163,6 @@ struct mat3 {
   (a.m11 * b.m31 + a.m21 * b.m32 + a.m31 * b.m33), \
   (a.m12 * b.m31 + a.m22 * b.m32 + a.m32 * b.m33), \
   (a.m13 * b.m31 + a.m23 * b.m32 + a.m33 * b.m33)  \
-))
-
-/**
- * Translate mat3 a by vec2 b.
- */
-
-#define mat3_translate(a, b) ((mat3) mat3(       \
-  a.m11, a.m12, a.m13,                           \
-  a.m21, a.m22, a.m23,                           \
-  (b.x * a.m11 + b.y * a.m21 + a.m31),           \
-  (b.x * a.m12 + b.y * a.m22 + a.m32),           \
-  (b.x * a.m13 + b.y * a.m23 + a.m33)            \
 ))
 
 /**
@@ -175,24 +183,6 @@ struct mat3 {
 }))
 
 /**
- * Scales mat3 a by vec2 b.
- */
-
-#define mat3_scale(a, b) ((mat3) {               \
-  (a.m11 * b.x), (a.m12 * b.x), (a.m13 * b.x),   \
-  (a.m21 * b.y), (a.m22 * b.y), (a.m23 * b.y),   \
-  a.m31, a.m32, a.m33                            \
-})
-
-/**
- * Creates mat3 from translation vec2 a.
- */
-
-#define mat3_from_translation(a) ((mat3) {1, 0, 0,         \
-                                          0, 1, 0,         \
-                                          a.x, a.y, 1})
-
-/**
  * Creates mat3 from rotation angle rad.
  */
 
@@ -200,6 +190,16 @@ struct mat3 {
   cosf(rad), sinf(rad), 0,                       \
   -sinf(rad), cosf(rad), 0,                      \
   0, 0, 1                                        \
+})
+
+/**
+ * Scales mat3 a by vec2 b.
+ */
+
+#define mat3_scale(a, b) ((mat3) {               \
+  (a.m11 * b.x), (a.m12 * b.x), (a.m13 * b.x),   \
+  (a.m21 * b.y), (a.m22 * b.y), (a.m23 * b.y),   \
+  a.m31, a.m32, a.m33                            \
 })
 
 /**
@@ -213,7 +213,27 @@ struct mat3 {
 })
 
 /**
- * Creates mat2 from quat a.
+ * Translate mat3 a by vec2 b.
+ */
+
+#define mat3_translate(a, b) ((mat3) mat3(       \
+  a.m11, a.m12, a.m13,                           \
+  a.m21, a.m22, a.m23,                           \
+  (b.x * a.m11 + b.y * a.m21 + a.m31),           \
+  (b.x * a.m12 + b.y * a.m22 + a.m32),           \
+  (b.x * a.m13 + b.y * a.m23 + a.m33)            \
+))
+
+/**
+ * Creates mat3 from translation vec2 a.
+ */
+
+#define mat3_from_translation(a) ((mat3) {1, 0, 0,         \
+                                          0, 1, 0,         \
+                                          a.x, a.y, 1})
+
+/**
+ * Creates mat3 from quat a.
  */
 
 #define mat3_from_quat(a) ((mat3) ({             \
@@ -240,26 +260,6 @@ struct mat3 {
        (zy - wx),                                \
        (1 - xx - yy));                           \
 }))
-
-/**
- * Adds mat3 a and mat3 b.
- */
-
-#define mat3_add(a, b) ((mat3) {                 \
-  a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13,   \
-  a.m21 + b.m21, b.m22 + b.m22, a.m23 + b.m23,   \
-  a.m31 + b.m31, b.m32 + b.m32, a.m33 + b.m33    \
-})
-
-/**
- * Subtract mat3 b from mat3 a.
- */
-
-#define mat3_subtract(a, b) ((mat3) {            \
-  a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13,   \
-  a.m21 - b.m21, b.m22 - b.m22, a.m23 - b.m23,   \
-  a.m31 - b.m31, b.m32 - b.m32, a.m33 - b.m33    \
-})
 
 /**
  * Calculates Frobenius norm mat3 a.
@@ -292,4 +292,5 @@ struct mat3 {
                b.m31, b.m32, b.m33);                       \
   (strdup(str));                                           \
 })
+
 #endif

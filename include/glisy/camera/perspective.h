@@ -28,4 +28,5 @@ struct glisy_perspective_camera {
 
   double far;
 };
+
 #endif

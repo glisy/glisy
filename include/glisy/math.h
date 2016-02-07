@@ -11,5 +11,4 @@
 #include <glisy/math/mat4.h>
 #include <glisy/math/quat.h>
 
-
 #endif
