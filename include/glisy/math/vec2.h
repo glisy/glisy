@@ -227,4 +227,5 @@ struct vec2 { float x; float y; };
   sprintf(str, "vec2(%g, %g)", a.x, a.y);        \
   (strdup(str));                                 \
 })
+
 #endif

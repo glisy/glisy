@@ -230,4 +230,5 @@ struct vec3 { float x; float y; float z; };
   sprintf(str, "vec3(%g, %g, %g)", a.x, a.y, a.z);    \
   (strdup(str));                                      \
 })
+
 #endif

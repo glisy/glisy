@@ -51,4 +51,5 @@ glisy_render (const glisy_renderer,
 #ifdef __cplusplus
 }
 #endif
+
 #endif
