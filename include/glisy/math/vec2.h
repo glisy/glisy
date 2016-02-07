@@ -226,4 +226,5 @@ struct vec2 {
   sprintf(str, "vec2(%g, %g)", a.x, a.y);        \
   (strdup(str));                                 \
 })
+
 #endif

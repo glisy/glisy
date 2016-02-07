@@ -27,6 +27,7 @@ struct glisy_context {
    */
 
   void *data;
+
 };
 
 /**
