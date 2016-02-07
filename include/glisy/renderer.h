@@ -1,7 +1,7 @@
 #ifndef GLISY_RENDERER_H
 #define GLISY_RENDERER_H
 
-#include <glisy/context.h>
+#include <glisy/renderer.h>
 
 /**
  * glisy renderer structure.
@@ -9,12 +9,6 @@
 
 typedef struct glisy_renderer glisy_renderer;
 struct glisy_renderer {
-
-  /**
-   * Our known rendering context.
-   */
-
-  glisy_context ctx;
 
 };
 
