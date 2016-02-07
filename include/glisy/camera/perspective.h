@@ -1,6 +1,10 @@
 #ifndef GLISY_CAMERA_PERSPECTIVE_H
 #define GLISY_CAMERA_PERSPECTIVE_H
 
+/**
+ * Glisy Perspective Camera struct type.
+ */
+
 typedef struct glisy_perspective_camera glisy_perspective_camera;
 struct glisy_perspective_camera {
 
