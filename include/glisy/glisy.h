@@ -24,8 +24,8 @@ extern "C" {
 #include <glisy/camera/perspective.h>
 
 /**
- * Initializes glisy. Returns 1 on success,
- * otherwise 0 on failure.
+ * Initializes glisy.
+ * Returns 1 for success, 0 for failure.
  */
 
 int
