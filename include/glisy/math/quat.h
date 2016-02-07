@@ -1,8 +1,6 @@
 #ifndef GLISY_QUAT_H
 #define GLISY_QUAT_H
 
-#include <math.h>
-
 /**
  * quat struct type.
  */
@@ -19,7 +17,7 @@ struct quat {
  * quat initializers.
  */
 
-#define quat(x, y, z, w) (quat) {x, y, z, w}
 #define quat_create() quat(0, 0, 0, 1)
+#define quat(x, y, z, w) (quat) {x, y, z, w}
 
 #endif

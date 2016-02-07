@@ -60,7 +60,7 @@ struct mat2 {
 })
 
 /**
- * Calculates and sets inverse for mat2 a.
+ * Calculates and returns inverse for mat2 a.
  */
 
 #define mat2_invert(a) (mat2) ({       \

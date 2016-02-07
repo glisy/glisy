@@ -1,4 +1,3 @@
-
 #include <glisy/glisy.h>
 
 unsigned int angle = 0;

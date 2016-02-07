@@ -16,6 +16,7 @@ struct glisy_program {
    */
 
   GLuint id;
+
 };
 
 GLboolean

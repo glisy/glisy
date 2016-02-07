@@ -15,6 +15,7 @@ struct glisy_renderer {
    */
 
   glisy_context ctx;
+
 };
 
 /**
