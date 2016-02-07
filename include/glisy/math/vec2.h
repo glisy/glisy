@@ -13,10 +13,7 @@
  */
 
 typedef struct vec2 vec2;
-struct vec2 {
-  float x;
-  float y;
-};
+struct vec2 { float x; float y; };
 
 /**
  * vec2 initializer.
@@ -59,7 +56,7 @@ struct vec2 {
  * Copy vec2 b into vec2 a
  */
 
-#define vec2_copy(a, b) (vec2) ({      \
+#define vec2_copy(a, b) ({             \
   vec2 *tmp = &a;                      \
   (tmp->x = b.x);                      \
   (tmp->y = b.y);                      \
@@ -70,7 +67,7 @@ struct vec2 {
  * Sets x and y component of vec2.
  */
 
-#define vec2_set(v, a, b) (vec2) ({    \
+#define vec2_set(v, a, b) ({    \
   vec2 *tmp = &v;                      \
   tmp->x = ((float) a);                \
   tmp->y = ((float) b);                \
@@ -81,35 +78,31 @@ struct vec2 {
  * Add two vectors together.
  */
 
-#define vec2_add(a, b) ((vec2) {(a.x + b.x), \
-                                (a.y + b.y)})
+#define vec2_add(a, b) ((vec2) {(a.x + b.x), (a.y + b.y)})
 
 /**
  * Returns the maximum of two vec2 inputs.
  */
 
-#define vec2_max(a, b) ((vec2) {fmaxf(a.x, b.x), \
-                                fmaxf(a.y, b.y)})
+#define vec2_max(a, b) ((vec2) {fmaxf(a.x, b.x),fmaxf(a.y, b.y)})
 
 /**
  * Returns the minimum of two vec2 inputs.
  */
 
-#define vec2_min(a, b) ((vec2) {fminf(a.x, b.x), \
-                                fminf(a.y, b.y)})
+#define vec2_min(a, b) ((vec2) {fminf(a.x, b.x), fminf(a.y, b.y)})
 
 /**
  * Scale a vec2 by a scalar number.
  */
 
-#define vec2_scale(a, s) ((vec2) {(a.x * s), \
-                                  (a.y * s)})
+#define vec2_scale(a, s) ((vec2) {(a.x * s), (a.y * s)})
 
 /**
  * Calculates the Euclidean distance for a vec2.
  */
 
-#define vec2_distance(a, b) (float) sqrt(powf(b.x - a.x, 2) +   \
+#define vec2_distance(a, b) (float) sqrt(powf(b.x - a.x, 2) + \
                                          powf(b.y - a.y, 2))
 
 /**
@@ -214,7 +207,15 @@ struct vec2 {
   (vec2(x, y));                                  \
 })
 
-// @TODO(werle) - mat4 transform
+/**
+ * Transform vec2 with mat4.
+ */
+
+#define vec2_transform_mat4(a, m) (vec2) ({      \
+  float x = m.m11 * a.x + m.m21 * a.y + m.m31;   \
+  float y = m.m12 * a.x + m.m22 * a.y + m.m32;   \
+  (vec2(x, y));                                  \
+})
 
 /**
  * Returns a string representation of vec2 a.
