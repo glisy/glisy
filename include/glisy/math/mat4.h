@@ -1,8 +1,6 @@
 #ifndef GLISY_MAT4_H
 #define GLISY_MAT4_H
 
-#include <glisy/math.h>
-
 /**
  * mat4 struct type.
  */
