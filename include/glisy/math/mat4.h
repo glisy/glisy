@@ -71,12 +71,12 @@ struct mat4 {
  * Transposes mat4 a.
  */
 
-#define mat4_transpose(a) (mat4) ({    \
-  mat4(a.m11, a.m21, a.m31, a.m41,     \
-       a.m12, a.m22, a.m32, a.m42,     \
-       a.m13, a.m23, a.m33, a.m43,     \
-       a.m14, a.m24, a.m34, a.m44);    \
-})
+#define mat4_transpose(a) (mat4) {    \
+  a.m11, a.m21, a.m31, a.m41,          \
+  a.m12, a.m22, a.m32, a.m42,          \
+  a.m13, a.m23, a.m33, a.m43,          \
+  a.m14, a.m24, a.m34, a.m44           \
+}
 
 /**
  * Calculates and returns  inverse for

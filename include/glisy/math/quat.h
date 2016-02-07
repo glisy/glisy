@@ -8,12 +8,7 @@
  */
 
 typedef struct quat quat;
-struct quat {
-  float x;
-  float y;
-  float z;
-  float w;
-};
+struct quat { float x; float y; float z; float w; };
 
 /**
  * quat initializer.
