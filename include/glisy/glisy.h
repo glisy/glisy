@@ -11,7 +11,6 @@ extern "C" {
 
 #include <glisy/gl.h>
 #include <glisy/math.h>
-#include <glisy/mesh.h>
 #include <glisy/scene.h>
 #include <glisy/shader.h>
 #include <glisy/program.h>
