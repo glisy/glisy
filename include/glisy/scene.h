@@ -9,7 +9,10 @@
 
 typedef struct glisy_scene glisy_scene;
 struct glisy_scene {
+
+  // Glisy Scene position.
   vec3 position;
+
 };
 
 #endif
