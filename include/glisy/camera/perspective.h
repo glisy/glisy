@@ -8,29 +8,18 @@
 typedef struct glisy_perspective_camera glisy_perspective_camera;
 struct glisy_perspective_camera {
 
-  /**
-   * Vertical camera field of view in degrees.
-   */
-
+  // Vertical camera field of view in degrees.
   double fov;
 
-  /**
-   * Aspect ratio to determine horizontal field of view.
-   */
-
+  // Aspect ratio to determine horizontal field of view.
   double aspect;
 
-  /**
-   * Distance from near clipping plane.
-   */
-
+  // Distance from near clipping plane.
   double near;
 
-  /**
-   * Distance from far clipping plane.
-   */
-
+  // Distance from far clipping plane.
   double far;
+
 };
 
 #endif
