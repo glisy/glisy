@@ -29,23 +29,23 @@ extern "C" {
  */
 
 int
-glisy_init (void);
+glisy_init(void);
 
 /**
  * Terminate glisy.
  */
 
 void
-glisy_terminate (void);
+glisy_terminate(void);
 
 /**
  * Renders scene with camera.
  */
 
 void
-glisy_render (const glisy_renderer,
-              const glisy_scene,
-              const glisy_perspective_camera);
+glisy_render(const glisy_renderer,
+             const glisy_scene,
+             const glisy_perspective_camera);
 
 #ifdef __cplusplus
 }

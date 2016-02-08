@@ -6,7 +6,7 @@
  */
 
 int
-glisy_init () {
+glisy_init() {
   return GL_TRUE;
 }
 
@@ -15,4 +15,4 @@ glisy_init () {
  */
 
 void
-glisy_terminate (void) {}
+glisy_terminate(void) {}

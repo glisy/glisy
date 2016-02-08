@@ -34,6 +34,6 @@ struct glisy_shader {
 };
 
 GLboolean
-glisy_shader_init (glisy_shader *shader, GLuint type, const char *source);
+glisy_shader_init(glisy_shader *shader, GLuint type, const char *source);
 
 #endif
