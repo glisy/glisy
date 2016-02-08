@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 /**
- * glisy api
+ * Glisy API.
  */
 
 #include <glisy/gl.h>
@@ -18,34 +18,33 @@ extern "C" {
 #include <glisy/renderer.h>
 
 /**
- * cameras.
+ * Cameras.
  */
 
 #include <glisy/camera/perspective.h>
 
 /**
- * Initializes glisy.
- * Returns 1 for success, 0 for failure.
+ * Initialize Glisy.
  */
 
-int
+GLboolean
 glisy_init(void);
 
 /**
- * Terminate glisy.
+ * Terminate Glisy.
  */
 
-void
+GLboolean
 glisy_terminate(void);
 
 /**
- * Renders scene with camera.
+ * Renders a Glisy Scene with a Glisy Camera.
  */
 
 void
-glisy_render(const glisy_renderer,
-             const glisy_scene,
-             const glisy_perspective_camera);
+glisy_render(const glisy_renderer renderer,
+             const glisy_scene scene,
+             const glisy_perspective_camera camera);
 
 #ifdef __cplusplus
 }
