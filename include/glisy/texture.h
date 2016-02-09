@@ -3,19 +3,42 @@
 
 #include <glisy/gl.h>
 
+/**
+ * Glisy Texture Options structure type.
+ */
+
 typedef struct glisy_texture_options glisy_texture_options;
 struct glisy_texture_options {
+
+  // Glisy Texture format.
   GLuint format;
-  unsigned int width;
-  unsigned int height;
+
+  // Glisy Texture width.
+  GLuint width;
+
+  // Glisy Texture height.
+  GLuint height;
+
 };
+
+/**
+ * Glisy Texture structure type.
+ */
 
 typedef struct glisy_texture glisy_texture;
 struct glisy_texture {
+
+  // Glisy Texture ID.
   GLuint id;
+
 };
 
+/**
+ * Glisy Texture initializer.
+ * @param options - Glisy Texture Options struct
+ */
 
-glisy_texture_init (glisy_texture_options);
+GLboolean
+glisy_texture_init(glisy_texture_options options);
 
 #endif

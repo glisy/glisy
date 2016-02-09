@@ -3,9 +3,16 @@
 
 #include <glisy/math/vec3.h>
 
+/**
+ * Glisy Scene structure type.
+ */
+
 typedef struct glisy_scene glisy_scene;
 struct glisy_scene {
+
+  // Glisy Scene position.
   vec3 position;
+
 };
 
 #endif
