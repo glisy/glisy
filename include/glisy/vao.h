@@ -13,6 +13,7 @@
 typedef struct glisy_vao_attribute glisy_vao_attribute;
 struct glisy_vao_attribute {
   GLuint location;
+  GLchar *name;
 
   struct {
     GLfloat data[BUFSIZ];
