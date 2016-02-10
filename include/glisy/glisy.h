@@ -10,9 +10,11 @@ extern "C" {
  */
 
 #include <glisy/gl.h>
+#include <glisy/vao.h>
 #include <glisy/math.h>
 #include <glisy/scene.h>
 #include <glisy/shader.h>
+#include <glisy/buffer.h>
 #include <glisy/program.h>
 #include <glisy/renderer.h>
 

@@ -1,9 +1,6 @@
 SRC := $(wildcard *.c)
 LIB := ../../libglisy.a
 TESTS := $(SRC:.c=)
-CFLAGS += -I../../include
-CFLAGS += -std=c99
-CFLAGS += -Wall
 
 all: $(TESTS)
 $(TESTS): $(LIB)
