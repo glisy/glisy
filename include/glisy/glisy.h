@@ -16,6 +16,7 @@ extern "C" {
 #include <glisy/shader.h>
 #include <glisy/buffer.h>
 #include <glisy/program.h>
+#include <glisy/geometry.h>
 #include <glisy/renderer.h>
 
 /**
@@ -23,29 +24,6 @@ extern "C" {
  */
 
 #include <glisy/camera/perspective.h>
-
-/**
- * Initialize Glisy.
- */
-
-GLboolean
-glisy_init(void);
-
-/**
- * Terminate Glisy.
- */
-
-GLboolean
-glisy_terminate(void);
-
-/**
- * Renders a Glisy Scene with a Glisy Camera.
- */
-
-void
-glisy_render(const glisy_renderer renderer,
-             const glisy_scene scene,
-             const glisy_perspective_camera camera);
 
 #ifdef __cplusplus
 }

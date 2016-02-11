@@ -13,7 +13,7 @@
 typedef struct glisy_vao_attribute glisy_vao_attribute;
 struct glisy_vao_attribute {
   GLuint location;
-  GLchar *name;
+  char *name;
 
   struct {
     GLfloat data[BUFSIZ];
@@ -35,6 +35,7 @@ struct glisy_vao {
   GLuint handle;
   GLuint length;
   glisy_vao_attribute attributes[GLISY_MAX_VAO_ATTRIBS];
+  GLboolean useElements;
 };
 
 /**
@@ -65,10 +66,10 @@ glisy_vao_dispose(glisy_vao *vao);
  */
 
 void
-glisy_vao_update(glisy_vao *vao);
+glisy_vao_update(glisy_vao *vao, glisy_buffer *elements);
 
 GLuint
-glisy_vao_push(glisy_vao *vao, glisy_vao_attribute attr);
+glisy_vao_push(glisy_vao *vao, glisy_vao_attribute *attr);
 
 GLuint
 glisy_vao_pop(glisy_vao *vao);
@@ -77,7 +78,7 @@ GLuint
 glisy_vao_splice(glisy_vao *vao, GLint start, GLuint count);
 
 GLuint
-glisy_vao_set(glisy_vao *vao, GLuint location, glisy_vao_attribute attr);
+glisy_vao_set(glisy_vao *vao, GLuint location, glisy_vao_attribute *attr);
 
 GLuint
 glisy_vao_remove(glisy_vao *vao, GLuint location);
