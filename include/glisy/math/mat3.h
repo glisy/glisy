@@ -281,16 +281,18 @@ struct mat3 {
  * Returns a string representation of mat3 a.
  */
 
-#define mat3_string(a) (const char *) ({                   \
-  char str[BUFSIZ];                                        \
-  mat3 b;                                                  \
-  mat3_copy(b, a);                                         \
-  memset(str, 0, BUFSIZ);                                  \
-  sprintf(str, "mat3(%f, %f, %f, %f, %f, %f, %f, %f, %f)", \
-               b.m11, b.m12, b.m13,                        \
-               b.m21, b.m22, b.m23,                        \
-               b.m31, b.m32, b.m33);                       \
-  (strdup(str));                                           \
+#define mat3_string(a) (const char *) ({                       \
+  char str[BUFSIZ];                                            \
+  mat3 b;                                                      \
+  mat3_copy(b, a);                                             \
+  memset(str, 0, BUFSIZ);                                      \
+  sprintf(str, "mat3(%f, %f, %f,\n"                            \
+               "     %f, %f, %f,\n"                            \
+               "     %f, %f, %f)",                             \
+               b.m11, b.m12, b.m13,                            \
+               b.m21, b.m22, b.m23,                            \
+               b.m31, b.m32, b.m33);                           \
+  (strdup(str));                                               \
 })
 
 #endif

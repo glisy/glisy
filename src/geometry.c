@@ -1,56 +1,187 @@
 #include <strings.h>
+#include <glisy/program.h>
 #include <glisy/geometry.h>
 
 // push a vao attribute onto the geometry attributes array
 static void
-push_attr(glisy_geometry *geometry, glisy_vao_attribute *attribute) {
+upsert_attr(glisy_geometry *geometry, glisy_vao_attribute *attribute) {
   if (geometry == NULL) return;
   if (attribute == NULL) return;
 
+  // if attr has a name and exists, just update it
+  if (attribute->name) {
+    for (int i = 0; i < geometry->attrlen; ++i) {
+      glisy_vao_attribute *cursor = &geometry->attributes[i];
+      if ((cursor->name && 0 == strcmp(cursor->name, attribute->name)) ||
+          (!cursor->name && cursor->location == attribute->location)) {
+        attribute->location = cursor->location;
+#define copy(P) cursor-> P = attribute-> P;
+        copy(name);
+        copy(buffer.type);
+        copy(buffer.size);
+        copy(buffer.usage);
+        copy(buffer.stride);
+        copy(buffer.offset);
+        copy(buffer.dimension);
+        copy(buffer.normalized);
+        memcpy(cursor->buffer.data, attribute->buffer.data, attribute->buffer.size);
+#undef copy
+        return;
+      }
+    }
+  }
+
   if (geometry->attrlen < GLISY_MAX_VAO_ATTRIBS) {
-    geometry->attributes[geometry->attrlen++] = attribute;
+    memcpy(&geometry->attributes[geometry->attrlen++],
+           attribute,
+           sizeof(glisy_vao_attribute));
   }
 }
-
-/**
- * Glisy Geometry initializer.
- */
 
 void
 glisy_geometry_init(glisy_geometry *geometry) {
   if (geometry == NULL) return;
 
+  geometry->elementsType = GL_UNSIGNED_SHORT;
+  geometry->useElements = GL_FALSE;
+  geometry->faceslen = 0;
   geometry->attrlen = 0;
+  geometry->program = 0;
   geometry->dirty = GL_FALSE;
 
   memset(&geometry->attributes, 0, sizeof(glisy_vao_attribute *) * GLISY_MAX_VAO_ATTRIBS);
   glisy_vao_init(&geometry->vao);
 }
 
-/**
- * Glisy Geometry update.
- */
-
 void
 glisy_geometry_update(glisy_geometry *geometry) {
   if (geometry == NULL) return;
   if (!geometry->dirty) return;
 
+  // dispose and reinitialize VAO
   glisy_vao_dispose(&geometry->vao);
   glisy_vao_init(&geometry->vao);
-  //@TODO(jwerle): complete me
+
+  for (int i = 0; i < geometry->attrlen; ++i) {
+    glisy_vao_attribute *attr = &geometry->attributes[i];
+
+    // push geometry attribute to VAO
+    glisy_vao_push(&geometry->vao, attr);
+
+    // if a program pointer exists and the the attributes
+    // name string is set then bind the attribute location
+    // to the program by name.
+    if (attr->name && geometry->program && geometry->program->id) {
+      attr->location = i;
+      glBindAttribLocation(geometry->program->id,
+                           attr->location,
+                           attr->name);
+    }
+  }
+
+  // update VAO
+  if (geometry->useElements) {
+    glisy_vao_update(&geometry->vao, &geometry->index);
+  } else {
+    glisy_vao_update(&geometry->vao, 0);
+  }
+
+  geometry->dirty = GL_FALSE;
 }
 
-/**
- * Glisy Geometry attributes.
- */
-
 void
-glisy_geometry_attr(glisy_geometry *geometry, GLchar *name, glisy_vao_attribute *attr) {
+glisy_geometry_attr(glisy_geometry *geometry,
+                    char *name,
+                    glisy_vao_attribute *attr) {
   if (geometry == NULL) return;
   if (name == NULL) return;
 
-  geometry->dirty = GL_TRUE;
   attr->name = name;
-  push_attr(geometry, attr);
+  geometry->dirty = GL_TRUE;
+  upsert_attr(geometry, attr);
+}
+
+void
+glisy_geometry_faces(glisy_geometry *geometry,
+                     glisy_vao_attribute *attr) {
+
+  glisy_buffer_dispose(&geometry->index);
+  glisy_buffer_init(&geometry->index, GL_ELEMENT_ARRAY_BUFFER);
+  glisy_buffer_source(&geometry->index,
+                      attr->buffer.size,
+                      attr->buffer.data);
+  glisy_buffer_update(&geometry->index, GL_DYNAMIC_DRAW);
+  geometry->useElements = GL_TRUE;
+}
+
+void
+glisy_geometry_dispose(glisy_geometry *geometry) {
+  if (geometry == NULL) return;
+  geometry->attrlen = 0;
+  glisy_vao_dispose(&geometry->vao);
+  glisy_buffer_dispose(&geometry->index);
+}
+
+void
+glisy_geometry_bind(glisy_geometry *geometry, glisy_program *program) {
+  if (geometry == NULL) return;
+  geometry->program = program;
+  glisy_geometry_update(geometry);
+  glisy_vao_bind(&geometry->vao);
+}
+
+void
+glisy_geometry_unbind(glisy_geometry *geometry) {
+  if (geometry == NULL) return;
+  glisy_geometry_update(geometry);
+  glisy_vao_unbind(&geometry->vao);
+}
+
+void
+glisy_geometry_draw(glisy_geometry *geometry,
+                    GLuint mode,
+                    GLuint start,
+                    GLuint stop) {
+  GLuint offset = 0;
+  switch (geometry->elementsType) {
+    case GL_FLOAT:
+      offset = sizeof(GLfloat) * start;
+      break;
+
+    case GL_UNSIGNED_INT:
+      offset = sizeof(GLuint) * start;
+      break;
+
+    case GL_INT:
+      offset = sizeof(GLint) * start;
+      break;
+
+    case GL_UNSIGNED_SHORT:
+      offset = sizeof(GLushort) * start;
+      break;
+
+    case GL_SHORT:
+      offset = sizeof(GLshort) * start;
+      break;
+
+    case GL_UNSIGNED_BYTE:
+      offset = sizeof(uint8_t) * start;
+      break;
+
+    case GL_BYTE:
+      offset = sizeof(int8_t) * start;
+      break;
+
+  }
+
+  glisy_geometry_update(geometry);
+  if (geometry->vao.useElements) {
+    glDrawElements(mode,
+                  stop - start,
+                  geometry->elementsType,
+                  &offset);
+
+  } else {
+    glDrawArrays(mode, start, stop - start);
+  }
 }

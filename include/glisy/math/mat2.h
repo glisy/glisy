@@ -184,7 +184,7 @@ struct mat2 {
 #define mat2_string(a) (const char *) ({         \
   char str[BUFSIZ];                              \
   memset(str, 0, BUFSIZ);                        \
-  sprintf(str, "mat2(%f, %f, %f, %f)",           \
+  sprintf(str, "mat2(%f, %f, \n%f, %f)",         \
                a.m11, a.m12, a.m21, a.m22);      \
   (strdup(str));                                 \
 })
