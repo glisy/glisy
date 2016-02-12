@@ -1,0 +1,5 @@
+#!/bin/bash
+PREFIX=${PREFIX:-/usr/local}
+ln -sf $(pwd)/include/glisy ${PREFIX}/include
+ln -sf $(pwd)/libglisy.a ${PREFIX}/lib
+
