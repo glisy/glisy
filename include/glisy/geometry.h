@@ -26,6 +26,9 @@ struct glisy_geometry {
   // length of vertices needed to draw faces
   GLuint faceslen;
 
+  // length of indices
+  GLuint indiceslen;
+
   // index buffer
   glisy_buffer index;
 
@@ -34,6 +37,9 @@ struct glisy_geometry {
 
   // GL element type (GL_INT, GL_UNSIGNED_SHORT, etc)
   GLenum elementsType;
+
+  // element array buffer indices
+  GLushort indices[BUFSIZ];
 
   // predicate to indicate that the geometry should
   // tell the underlying VAO to use elements for the
@@ -83,7 +89,8 @@ glisy_geometry_attr(glisy_geometry *geometry,
 
 void
 glisy_geometry_faces(glisy_geometry *geometry,
-                     glisy_vao_attribute *attr);
+                     GLuint count,
+                     GLushort *indices);
 
 /**
  */
