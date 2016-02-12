@@ -1,3 +1,6 @@
+## Project settings
+PROJECT_NAME ?= glisy
+
 ## Source files
 SRC += $(wildcard src/*.c)
 
@@ -7,9 +10,10 @@ OBJS := $(SRC:.c=.o)
 ## Compiler flags
 CFLAGS += -Iinclude
 CFLAGS += -Wall
+CFLAGS += -O2
 
 ## Target static library
-TARGET_STATIC := libglisy.a
+TARGET_STATIC := lib$(PROJECT_NAME).a
 
 ## Builds everything
 .PHONY: all
@@ -33,7 +37,7 @@ clean:
 ## Compiles and runs all test
 .PHONY: test
 test:
-	@$(MAKE) -C $@
+	$(MAKE) -C $@
 
 .PHONY: test/clean
 test/clean:
