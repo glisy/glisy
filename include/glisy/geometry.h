@@ -81,7 +81,7 @@ glisy_geometry_update(glisy_geometry *geometry);
 
 void
 glisy_geometry_attr(glisy_geometry *geometry,
-                    char *name,
+                    const char *name,
                     glisy_vao_attribute *attr);
 
 /**

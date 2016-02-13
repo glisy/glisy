@@ -99,7 +99,7 @@ glisy_geometry_update(glisy_geometry *geometry) {
 
 void
 glisy_geometry_attr(glisy_geometry *geometry,
-                    char *name,
+                    const char *name,
                     glisy_vao_attribute *attr) {
   if (geometry == NULL) return;
   if (name == NULL) return;
@@ -147,38 +147,6 @@ glisy_geometry_draw(glisy_geometry *geometry,
                     GLuint mode,
                     GLuint start,
                     GLuint stop) {
-  GLuint offset = 0;
-  switch (geometry->elementsType) {
-    case GL_FLOAT:
-      offset = sizeof(GLfloat) * start;
-      break;
-
-    case GL_UNSIGNED_INT:
-      offset = sizeof(GLuint) * start;
-      break;
-
-    case GL_INT:
-      offset = sizeof(GLint) * start;
-      break;
-
-    case GL_UNSIGNED_SHORT:
-      offset = sizeof(GLushort) * start;
-      break;
-
-    case GL_SHORT:
-      offset = sizeof(GLshort) * start;
-      break;
-
-    case GL_UNSIGNED_BYTE:
-      offset = sizeof(uint8_t) * start;
-      break;
-
-    case GL_BYTE:
-      offset = sizeof(int8_t) * start;
-      break;
-
-  }
-
   glisy_geometry_update(geometry);
   if (geometry->vao.useElements) {
     glDrawElements(mode,
