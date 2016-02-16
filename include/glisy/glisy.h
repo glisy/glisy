@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define GLISY_EXPORT __attribute__((visibility("default")))
+
 /**
  * Glisy API.
  */

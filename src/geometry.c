@@ -107,6 +107,11 @@ glisy_geometry_attr(glisy_geometry *geometry,
   attr->name = name;
   geometry->dirty = GL_TRUE;
   upsert_attr(geometry, attr);
+  //printf("%s \n", name);
+  //for (int i = 0; i < 9; i++) {
+    //printf("%f ", attr->buffer.data[i]);
+  //}
+  //printf("\n");
 }
 
 void
