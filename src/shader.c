@@ -4,10 +4,6 @@
 #include <glisy/gl.h>
 #include <glisy/shader.h>
 
-/**
- * Glisy Shader initializer.
- */
-
 GLboolean
 glisy_shader_init(glisy_shader *shader, GLuint type, const char *source) {
   GLint isCompiled = 0;
