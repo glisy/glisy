@@ -13,23 +13,27 @@ glisy_buffer_init(glisy_buffer *buffer, GLuint target) {
 
 void
 glisy_buffer_bind(glisy_buffer *buffer) {
+  if (!buffer) return;
   glGenBuffers(1, &buffer->handle);
   glBindBuffer(buffer->target, buffer->handle);
 }
 
 void
 glisy_buffer_unbind(glisy_buffer *buffer) {
+  if (!buffer) return;
   glBindBuffer(buffer->target, 0);
 }
 
 void
 glisy_buffer_dispose(glisy_buffer *buffer) {
+  if (!buffer) return;
   glDeleteBuffers(1, &buffer->handle);
   buffer->handle = 0;
 }
 
 void
 glisy_buffer_update(glisy_buffer *buffer, GLuint usage) {
+  if (!buffer) return;
   glBufferData(buffer->target,
                buffer->size,
                buffer->data,
@@ -39,6 +43,7 @@ glisy_buffer_update(glisy_buffer *buffer, GLuint usage) {
 void
 glisy_buffer_source(glisy_buffer *buffer, GLsizei size, GLvoid *data) {
   if (!buffer) return;
+  if (!data) return;
   buffer->size = size;
   memset(buffer->data, 0, BUFSIZ);
   memcpy(buffer->data, data, size);
