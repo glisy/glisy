@@ -4,10 +4,14 @@ PROJECT_NAME ?= glisy
 ## Source files
 SRC += $(wildcard src/*.c)
 
+## Dependency source files
+SRC += $(wildcard deps/*/*.c)
+
 ## Source objects
 OBJS := $(SRC:.c=.o)
 
 ## Compiler flags
+CFLAGS += -Ideps
 CFLAGS += -Iinclude
 CFLAGS += -Wall
 CFLAGS += -O2
