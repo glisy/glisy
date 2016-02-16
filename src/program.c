@@ -1,13 +1,9 @@
 #include <stdlib.h>
 #include <glisy/program.h>
 
-/**
- * Glisy Program initializer.
- */
-
 GLboolean
 glisy_program_init(glisy_program *program) {
-  if (program == NULL) return GL_FALSE;
+  if (!program) return GL_FALSE;
 
   program->id = glCreateProgram();
   if (program->id == 0) return GL_FALSE;
@@ -15,14 +11,10 @@ glisy_program_init(glisy_program *program) {
   return GL_TRUE;
 }
 
-/**
- * Attaches a Glisy Vertext or Fragment Shader to a Glisy Program.
- */
-
 GLboolean
 glisy_program_attach_shader(const glisy_program *program, const glisy_shader *shader) {
-  if (program == NULL) return GL_FALSE;
-  if (shader == NULL)  return GL_FALSE;
+  if (!program) return GL_FALSE;
+  if (!shader)  return GL_FALSE;
 
   // @TODO(jwerle): error handling
   glAttachShader(program->id, shader->id);
@@ -30,15 +22,11 @@ glisy_program_attach_shader(const glisy_program *program, const glisy_shader *sh
   return GL_TRUE;
 }
 
-/**
- * Glisy Program link.
- */
-
 GLboolean
 glisy_program_link(glisy_program *program) {
   GLint isLinked = 0;
 
-  if (program == NULL) return GL_FALSE;
+  if (!program) return GL_FALSE;
 
   glLinkProgram(program->id);
   glGetProgramiv(program->id, GL_LINK_STATUS, &isLinked);
@@ -63,13 +51,9 @@ glisy_program_link(glisy_program *program) {
   return GL_TRUE;
 }
 
-/**
- * Glisy Program delete.
- */
-
 GLboolean
 glisy_program_delete(glisy_program *program) {
-  if (program == NULL) return GL_FALSE;
+  if (!program) return GL_FALSE;
   if (program->id == 0) return GL_FALSE;
 
   glDeleteProgram(program->id);
