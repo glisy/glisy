@@ -1,0 +1,15 @@
+{
+  "name": "glisy",
+  "version": "0.0.1",
+  "repo": "littlstar/glisy",
+  "description": "Higher level operations for OpenGLES in C(99)",
+  "keywords": [
+    "opengl",
+    "gl",
+    "glsl"
+  ],
+  "install": "make install",
+  "dependencies": {
+    "clibs/rgba": "0.0.1"
+  }
+}
