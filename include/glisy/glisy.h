@@ -15,18 +15,10 @@ extern "C" {
 #include <glisy/vao.h>
 #include <glisy/math.h>
 #include <glisy/color.h>
-#include <glisy/scene.h>
 #include <glisy/shader.h>
 #include <glisy/buffer.h>
 #include <glisy/program.h>
 #include <glisy/geometry.h>
-#include <glisy/renderer.h>
-
-/**
- * Cameras.
- */
-
-#include <glisy/camera/perspective.h>
 
 #ifdef __cplusplus
 }
