@@ -5,8 +5,8 @@
 // push a vao attribute onto the geometry attributes array
 static void
 upsert_attr(glisy_geometry *geometry, glisy_vao_attribute *attribute) {
-  if (geometry == NULL) return;
-  if (attribute == NULL) return;
+  if (!geometry) return;
+  if (!attribute) return;
 
   // if attr has a name and exists, just update it
   if (attribute->name) {
@@ -40,7 +40,7 @@ upsert_attr(glisy_geometry *geometry, glisy_vao_attribute *attribute) {
 
 void
 glisy_geometry_init(glisy_geometry *geometry) {
-  if (geometry == NULL) return;
+  if (!geometry) return;
 
   geometry->elementsType = GL_UNSIGNED_SHORT;
   geometry->useElements = GL_FALSE;
@@ -57,7 +57,7 @@ void
 glisy_geometry_update(glisy_geometry *geometry) {
   // index buffer object (GL_ELEMENT_ARRAY_BUFFER)
   GLuint ibo;
-  if (geometry == NULL) return;
+  if (!geometry) return;
   if (!geometry->dirty) return;
 
   // dispose and reinitialize VAO
@@ -101,17 +101,13 @@ void
 glisy_geometry_attr(glisy_geometry *geometry,
                     const char *name,
                     glisy_vao_attribute *attr) {
-  if (geometry == NULL) return;
-  if (name == NULL) return;
+  if (!geometry) return;
+  if (!name) return;
+  if (!attr) return;
 
   attr->name = name;
   geometry->dirty = GL_TRUE;
   upsert_attr(geometry, attr);
-  //printf("%s \n", name);
-  //for (int i = 0; i < 9; i++) {
-    //printf("%f ", attr->buffer.data[i]);
-  //}
-  //printf("\n");
 }
 
 void
@@ -119,14 +115,17 @@ glisy_geometry_faces(glisy_geometry *geometry,
                      GLuint count,
                      GLushort *indices) {
 
+  if (!geometry) return;
+  if (!indices) return;
   geometry->indiceslen = count;
   memcpy(geometry->indices, indices, sizeof(GLushort) * count);
   geometry->useElements = GL_TRUE;
+  geometry->dirty = GL_TRUE;
 }
 
 void
 glisy_geometry_dispose(glisy_geometry *geometry) {
-  if (geometry == NULL) return;
+  if (!geometry) return;
   geometry->attrlen = 0;
   glisy_vao_dispose(&geometry->vao);
   glisy_buffer_dispose(&geometry->index);
@@ -134,7 +133,8 @@ glisy_geometry_dispose(glisy_geometry *geometry) {
 
 void
 glisy_geometry_bind(glisy_geometry *geometry, glisy_program *program) {
-  if (geometry == NULL) return;
+  if (!geometry) return;
+  if (!program)  return;
   geometry->program = program;
   glisy_geometry_update(geometry);
   glisy_vao_bind(&geometry->vao);
@@ -142,7 +142,7 @@ glisy_geometry_bind(glisy_geometry *geometry, glisy_program *program) {
 
 void
 glisy_geometry_unbind(glisy_geometry *geometry) {
-  if (geometry == NULL) return;
+  if (!geometry) return;
   glisy_geometry_update(geometry);
   glisy_vao_unbind(&geometry->vao);
 }
@@ -152,6 +152,7 @@ glisy_geometry_draw(glisy_geometry *geometry,
                     GLuint mode,
                     GLuint start,
                     GLuint stop) {
+  if (!geometry) return;
   glisy_geometry_update(geometry);
   if (geometry->vao.useElements) {
     glDrawElements(mode,

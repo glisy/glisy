@@ -6,55 +6,29 @@
 #include <glisy/program.h>
 
 /**
- * Geometry structure to abstract interaction
- * with the VAO (vertex array object) and OpenGL
- * buffer objects (ARRAY_BUFFER, ELEMENT_ARRAY_BUFFER, etc)
+ * Glisy Geometry struct type.
  */
 
 typedef struct glisy_geometry glisy_geometry;
 struct glisy_geometry {
-
-  // vertext array object
   glisy_vao vao;
-
-  // array of vao attributes
   glisy_vao_attribute attributes[GLISY_MAX_VAO_ATTRIBS];
-
-  // length of vao attributes array
   GLuint attrlen;
-
-  // length of vertices needed to draw faces
   GLuint faceslen;
-
-  // length of indices
   GLuint indiceslen;
-
-  // index buffer
   glisy_buffer index;
-
-  // does the geometry need an update
   GLboolean dirty;
-
-  // GL element type (GL_INT, GL_UNSIGNED_SHORT, etc)
   GLenum elementsType;
-
-  // element array buffer indices
   GLushort indices[BUFSIZ];
-
-  // predicate to indicate that the geometry should
-  // tell the underlying VAO to use elements for the
-  // ELEMENT_ARRAY_BUFFER
   GLboolean useElements;
-
-  // Bound pointer a glisy_program
   glisy_program *program;
 };
 
 /**
- * Initializes a pointer to a glisy_geometry structure. This function
- * sets the default element type to GL_UNSIGNED_SHORT. The faces vertices
- * length and attribute length is reset to 0. An existing attributes
- * bound to the geometry are cleared and the internal VAO is reinitialized.
+ * This function initializes a glisy_geometry struct with default values. Any
+ * existing vao attributes bound to the geometry are cleared and the internal
+ * VAO is reinitialized. If the geometry param is NULL or undefined the function
+ * returns.
  *
  * @param glisy_geometry * - A pointer to a glisy_geometry struct.
  */
@@ -63,10 +37,13 @@ void
 glisy_geometry_init(glisy_geometry *geometry);
 
 /**
- * Updates geometry VAO. The internal VAO is disposed and all bound attributes
- * to the geometry are bound to the VAO again. If the the geometry should use
- * elements then the geometry index buffer is given to the internal VAO when
- * it is updated.
+ * Updates an existing geometry object when changes have been made. Any existing
+ * VAO's are disposed of and reinitialized using glisy_vao_dispose() and
+ * glisy_vao_init(). If the glisy_geometry useElements member has been set to
+ * true The VAO is updated using glisy_vao_update() and the buffers generated,
+ * bound and initialized using the relevant OpenGL functions. If the geometry
+ * param is NULL or undefined, or the dirty member has not been set to true, the
+ * function returns.
  *
  * @param glisy_geometry * - A pointer to a glisy_geometry struct.
  */
@@ -75,8 +52,14 @@ void
 glisy_geometry_update(glisy_geometry *geometry);
 
 /**
- * Glisy Geometry attributes.
- * @param geometry - pointer to a Glisy Geometry struct
+ * Push a new glisy_vao_attribute into a glisy_geometry struct. This function
+ * finishes by marking the geometry param as dirty so it can be passed to
+ * glisy_geometry_update(). If the geometry, name or attr params are NULL or
+ * undefined, the function returns.
+ *
+ * @param glisy_geometry *      - pointer to a glisy_geometry struct.
+ * @param name *                - pointer to a char array.
+ * @param glisy_vao_attribute * - pointer to a glisy_vao_attribute struct.
  */
 
 void
@@ -85,6 +68,15 @@ glisy_geometry_attr(glisy_geometry *geometry,
                     glisy_vao_attribute *attr);
 
 /**
+ * Setup the glisy_geometry indices and indiceslen members to support rendering
+ * faces. This function completes by setting the glisy_geometry useElements
+ * and dirty members to true so the geometry can be sent back to
+ * glisy_geometry_update(). If the geometry or indices params are NULL or
+ * undefined, the function returns.
+ *
+ * @param glisy_geometry * - pointer to a glisy_geometry struct.
+ * @param count            - count of indices for faces.
+ * @param indices        * - pointer to an array of index faces.
  */
 
 void
@@ -93,24 +85,48 @@ glisy_geometry_faces(glisy_geometry *geometry,
                      GLushort *indices);
 
 /**
+ * This function clears out the members of a geometry and disposes of its VAO
+ and buffers. If the geometry param is NULL or undefined, the function returns.
+ *
+ * @param glisy_geometry * - pointer to a glisy_geometry struct.
  */
 
 void
 glisy_geometry_dispose(glisy_geometry *geometry);
 
 /**
+ * This function takes the geometry and program params, assigns the program to
+ * the geometry, updates the geometry and binds it VAO. If the geometry or
+ * program params are NULL or undefined, the function returns.
+ *
+ * @param glisy_geometry * - pointer to a glisy_geometry struct.
+ * @param glisy_program  * - pointer to a glisy_program struct.
  */
 
 void
 glisy_geometry_bind(glisy_geometry *geometry, glisy_program *program);
 
 /**
+ * This function calls glisy_geometry_update() and glisy_vao_unbind() t
+ * disassociate the VAO from the geometry. If the geometry param is NULL or
+ * undefined, the function returns.
+ *
+ * @param glisy_geometry * - pointer to a glisy_geometry struct.
  */
 
 void
 glisy_geometry_unbind(glisy_geometry *geometry);
 
 /**
+ * If the glisy_geometry useElements member has been set to true this function
+ * calls glDrawElements() passing the remaining params. If not, glDrawArrays()
+ * is called instead. If the geometry param is NULL or undefined, the function
+ * returns.
+ *
+ * @param glisy_geometry * - pointer to a glisy_geometry struct.
+ * @param mode             - OpenGL mode to draw.
+ * @param start            - starting element.
+ * @param stop             - number of elements to draw.
  */
 
 void
