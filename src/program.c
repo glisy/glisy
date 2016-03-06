@@ -52,6 +52,17 @@ glisy_program_link(glisy_program *program) {
 }
 
 GLboolean
+glisy_program_bind(glisy_program *program) {
+  if (!program) return GL_FALSE;
+  if (!program->id) {
+    if (!glisy_program_link(program)) return GL_FALSE;
+  }
+
+  glUseProgram(program->id);
+  return GL_TRUE;
+}
+
+GLboolean
 glisy_program_delete(glisy_program *program) {
   if (!program) return GL_FALSE;
   if (program->id == 0) return GL_FALSE;

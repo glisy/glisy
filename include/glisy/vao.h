@@ -48,7 +48,7 @@ struct glisy_vao {
  * value for the handle member. The length member defaults to 0 and useElements
  * defaults to false. If the vao param is NULL or undefined the function returns.
  *
- * @param vao * - pointer to a glisy_vao struct.
+ * @param vao - pointer to a glisy_vao struct.
  */
 
 void
@@ -59,7 +59,7 @@ glisy_vao_init(glisy_vao *vao);
  * memory location of the vao handle member. If the vao param is NULL or
  * undefined the function returns.
  *
- * @param vao * - pointer to a glisy_vao struct.
+ * @param vao - pointer to a glisy_vao struct.
  */
 
 void
@@ -69,7 +69,7 @@ glisy_vao_bind(glisy_vao *vao);
  * This function calls glBindVertexArray(0) to clear any bound verticies. If the
  * vao param is NULL or undefined the function returns.
  *
- * @param vao * - pointer to a glisy_vao struct.
+ * @param vao - pointer to a glisy_vao struct.
  */
 
 void
@@ -80,7 +80,7 @@ glisy_vao_unbind(glisy_vao *vao);
  * the memory location of the vao handle member. If the vao param is NULL or
  * undefined the function returns.
  *
- * @param vao * - pointer to a glisy_vao struct.
+ * @param vao - pointer to a glisy_vao struct.
  */
 
 void
@@ -93,8 +93,8 @@ glisy_vao_dispose(glisy_vao *vao);
  * elements are not being used, pass NULL to disable. If the vao param is NULL
  * or undefined the function will return.
  *
- * @param vao      * - pointer to a glisy_vao struct.
- * @param elements * - pointer to a glisy_buffer struct.
+ * @param vao      - pointer to a glisy_vao struct.
+ * @param elements - pointer to a glisy_buffer struct.
  */
 
 void
@@ -105,8 +105,8 @@ glisy_vao_update(glisy_vao *vao, glisy_buffer *elements);
  * list of attributes. If the vao or attr params are NULL or undefined the
  * function returns false, otherwise it returns the new length of the vao.
  *
- * @param vao  * - pointer to a glisy_vao struct.
- * @param attr * - pointer to a glisy_vao_attribute struct.
+ * @param vao  - pointer to a glisy_vao struct.
+ * @param attr - pointer to a glisy_vao_attribute struct.
  */
 
 GLuint
@@ -115,7 +115,7 @@ glisy_vao_push(glisy_vao *vao, glisy_vao_attribute *attr);
 /**
  * @TODO(jwerle): implement glisy_vao_pop
  *
- * @param vao * - pointer to a glisy_vao struct.
+ * @param vao - pointer to a glisy_vao struct.
  */
 
 GLuint
@@ -124,7 +124,7 @@ glisy_vao_pop(glisy_vao *vao);
 /**
  * @TODO(jwerle): implement glisy_vao_splice
  *
- * @param vao * - pointer to a glisy_vao struct.
+ * @param vao   - pointer to a glisy_vao struct.
  * @param start - index at which to start slicing.
  * @param count - length of the slice.
  */
@@ -141,9 +141,9 @@ glisy_vao_splice(glisy_vao *vao,
  * params are NULL or undefined the function returns false, otherwise it returns
  * the new vao length.
  *
- * @param vao    * - pointer to a glisy_vao struct.
+ * @param vao      - pointer to a glisy_vao struct.
  * @param location - index at which to set the new vao attribute.
- * @param attr   * - pointer to a glisy_vao_attribute struct.
+ * @param attr     - pointer to a glisy_vao_attribute struct.
  */
 
 GLuint
@@ -154,7 +154,7 @@ glisy_vao_set(glisy_vao *vao,
 /**
  * @TODO(jwerle): implement glisy_vao_remove
  *
- * @param vao    * - pointer to a glisy_vao struct.
+ * @param vao      - pointer to a glisy_vao struct.
  * @param location - index of the attr to be removed.
  */
 
@@ -165,7 +165,7 @@ glisy_vao_remove(glisy_vao *vao, GLuint location);
  * This function initializes and binds a glisy_vao_attribute struct. If the
  * attribute param is NULL or undefined the function returns.
  *
- * @param attribute * - pointer to a glisy_vao_attribute struct.
+ * @param attribute - pointer to a glisy_vao_attribute struct.
  */
 
 void

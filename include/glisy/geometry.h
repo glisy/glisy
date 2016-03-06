@@ -19,7 +19,7 @@ struct glisy_geometry {
   glisy_buffer index;
   GLboolean dirty;
   GLenum elementsType;
-  GLushort indices[BUFSIZ];
+  GLuint indices[0xffffff];
   GLboolean useElements;
   glisy_program *program;
 };
@@ -81,8 +81,9 @@ glisy_geometry_attr(glisy_geometry *geometry,
 
 void
 glisy_geometry_faces(glisy_geometry *geometry,
+                     GLenum type,
                      GLuint count,
-                     GLushort *indices);
+                     void *indices);
 
 /**
  * This function clears out the members of a geometry and disposes of its VAO

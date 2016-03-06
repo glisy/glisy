@@ -17,6 +17,7 @@ extern "C" {
 #include <glisy/color.h>
 #include <glisy/shader.h>
 #include <glisy/buffer.h>
+#include <glisy/uniform.h>
 #include <glisy/program.h>
 #include <glisy/geometry.h>
 

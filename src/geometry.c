@@ -87,7 +87,7 @@ glisy_geometry_update(glisy_geometry *geometry) {
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 geometry->indiceslen * sizeof(GLushort),
+                 geometry->indiceslen * sizeof(GLuint),
                  geometry->indices,
                  GL_STATIC_DRAW);
   } else {
@@ -112,13 +112,15 @@ glisy_geometry_attr(glisy_geometry *geometry,
 
 void
 glisy_geometry_faces(glisy_geometry *geometry,
+                     GLenum type,
                      GLuint count,
-                     GLushort *indices) {
+                     void *indices) {
 
   if (!geometry) return;
   if (!indices) return;
+  geometry->elementsType = type;
   geometry->indiceslen = count;
-  memcpy(geometry->indices, indices, sizeof(GLushort) * count);
+  memcpy(geometry->indices, indices, sizeof(GLuint) * count);
   geometry->useElements = GL_TRUE;
   geometry->dirty = GL_TRUE;
 }

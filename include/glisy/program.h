@@ -53,6 +53,12 @@ GLboolean
 glisy_program_link(glisy_program *program);
 
 /**
+ */
+
+GLboolean
+glisy_program_bind(glisy_program *program);
+
+/**
  * This function uses glDeleteProgram() to destroy a glisy_program. If the
  * program param is NULL or undefined, or the glisy_program ID member is 0,
  * false is returned, otherwise it returns true.

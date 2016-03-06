@@ -215,10 +215,71 @@ struct vec3 { float x; float y; float z; };
   // @TODO(werle) - transform
   // @TODO(werle) - transformMat4
   // @TODO(werle) - transformQuat
-  // @TODO(werle) - rotateX
-  // @TODO(werle) - rotateY
-  // @TODO(werle) - rotateZ
   // @TODO(werle) - angle
+
+/**
+ */
+
+#define vec3_transform_mat4(vec, mat) (vec3) ({                    \
+  vec3 out;                                                        \
+  float x = vec.x, y = vec.y, z = vec.z;                           \
+  float w = mat.m14 * x + mat.m24 * y + mat.m34 * z + mat.m44;     \
+  w = w ? w : 1.0;                                                 \
+  out.x = (mat.m11 * x + mat.m21 * y + mat.m31 * z + mat.m41) / w; \
+  out.y = (mat.m12 * x + mat.m22 * y + mat.m32 * z + mat.m42) / w; \
+  out.z = (mat.m13 * x + mat.m23 * y + mat.m33 * z + mat.m43) / w; \
+  (out);                                                           \
+})
+
+/**
+ */
+
+#define vec3_rotateX(vec, axis, origin, angle) ({ \
+  vec3 p, r;                                      \
+  p.x = axis.x - origin.x;                        \
+  p.y = axis.y - origin.y;                        \
+  p.z = axis.z - origin.z;                        \
+  r.x = p.x;                                       \
+  r.y = p.y * cosf(angle) - p.z * sinf(angle);    \
+  r.z = p.y * sinf(angle) + p.z * cosf(angle);    \
+  vec.x = r.x + origin.x;                         \
+  vec.y = r.y + origin.y;                         \
+  vec.z = r.z + origin.z;                         \
+})
+
+/**
+ */
+
+#define vec3_rotateY(vec, axis, origin, angle) ({ \
+  vec3 p, r;                                      \
+  p.x = axis.x - origin.x;                        \
+  p.y = axis.y - origin.y;                        \
+  p.z = axis.z - origin.z;                        \
+  r.x = p.z * sinf(angle) + p.x * cosf(angle);    \
+  r.y = p.y;                                      \
+  r.z = p.z * cosf(angle) - p.x * sinf(angle);    \
+  vec.x = r.x + origin.x;                         \
+  vec.y = r.y + origin.y;                         \
+  vec.z = r.z + origin.z;                         \
+})
+
+/**
+ */
+
+#define vec3_rotateZ(vec, axis, origin, angle) ({ \
+  vec3 p, r;                                      \
+  p.x = axis.x - origin.x;                        \
+  p.y = axis.y - origin.y;                        \
+  p.z = axis.z - origin.z;                        \
+  r.x = p.x * cosf(angle) - p.y * sinf(angle);    \
+  r.y = p.x * sinf(angle) + p.y * cosf(angle);    \
+  r.z = p.z;                                      \
+  vec.x = r.x + origin.x;                         \
+  vec.y = r.y + origin.y;                         \
+  vec.z = r.z + origin.z;                         \
+})
+
+
 
 /**
  * Returns a string representation of vec3 a.
