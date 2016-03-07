@@ -6,7 +6,7 @@
 #include <glisy/buffer.h>
 
 #ifndef GLISY_MAX_VAO_ATTRIBS
-#define GLISY_MAX_VAO_ATTRIBS 64
+#define GLISY_MAX_VAO_ATTRIBS 0xff
 #endif
 
 /**
@@ -19,7 +19,7 @@ struct glisy_vao_attribute {
   const char *name;
 
   struct {
-    GLfloat data[BUFSIZ];
+    void *data;
     GLuint type;
     GLuint size;
     GLuint usage;

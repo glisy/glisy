@@ -8,6 +8,8 @@
 #include <stdio.h>
 
 #define dtor(d) d * (M_PI / 180)
+#define min(a, b) a < b ? a : b < a ? b : a
+#define max(a, b) a > b ? a : b > a ? b : a
 
 #define GL_CONTEXT_INIT() \
   if (!glfwInit()) return 1; \
@@ -28,7 +30,7 @@
     int height; \
     glfwGetFramebufferSize(window, &width, &height); \
     glViewport(0, 0, width, height); \
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); \
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); \
     glEnable(GL_DEPTH_TEST); \
     glEnable(GL_CULL_FACE); \
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); \
@@ -120,7 +122,7 @@ UpdateCamera(Camera *camera) {
 void
 InitializeCamera(Camera *camera, int width, int height) {
   camera->position = vec3(0, 0, 0);
-  camera->target = vec3(0, 0, 0);
+  camera->target = vec3(0, 0, 1);
   camera->center = vec3(0, 0, 0);
   camera->up = vec3(0, 1, 0);
 

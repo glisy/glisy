@@ -45,16 +45,29 @@ static GLFWwindow *window;
 static glisy_program program;
 
 // objects
+#define numberOfCubes 10
+static int cubeID = 0;
 static Camera camera;
-static Cube cubes[5];
+static Cube cubes[numberOfCubes];
 
 // colors
-static glisy_color blue;
-static glisy_color green;
+static glisy_color cubeColors[numberOfCubes] = {
+  {"blue"},
+  {"cyan"},
+  {"green"},
+  {"purple"},
+  {"yellow"},
+  {"salmon"},
+  {"silver"},
+  {"palegreen"},
+  {"mintcream"},
+  {"papayawhip"},
+};
 
 // cube constructor
 void
 InitializeCube(Cube *cube) {
+  const int id = cubeID++;
   const vec3 vertices[] = {
     vec3(-0.5, -0.5, +0.5),
     vec3(+0.5, -0.5, +0.5),
@@ -68,15 +81,15 @@ InitializeCube(Cube *cube) {
   };
 
   const vec3 colors[] = {
-    vec3(blue.r, blue.g, blue.a),
-    vec3(blue.r, blue.g, blue.a),
-    vec3(blue.r, blue.g, blue.a),
-    vec3(blue.r, blue.g, blue.a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
 
-    vec3(green.r, green.g, green.a),
-    vec3(green.r, green.g, green.a),
-    vec3(green.r, green.g, green.a),
-    vec3(green.r, green.g, green.a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
+    vec3(cubeColors[id].r, cubeColors[id].g, cubeColors[id].a),
   };
 
   const GLushort faces[] = {
@@ -122,8 +135,8 @@ InitializeCube(Cube *cube) {
   memcpy(cube->vertex.colors, colors, size);
   memcpy(cube->vertex.faces, faces, sizeof(faces));
 
-  memcpy(&cube->attributes.vPosition.buffer.data, vertices, size);
-  memcpy(&cube->attributes.vColor.buffer.data, colors, size);
+  cube->attributes.vPosition.buffer.data = (void *) vertices;
+  cube->attributes.vColor.buffer.data = (void *) colors;
 
   mat4_identity(cube->translation);
   mat4_identity(cube->transform);
@@ -188,7 +201,7 @@ RotateCube(Cube *cube, float radians) {
 }
 
 void
-MoveCube(Cube *cube, vec3 translation) {
+TranslateCube(Cube *cube, vec3 translation) {
   cube->position = vec3_add(cube->position, translation);
   cube->translation  = mat4_translate(cube->translation, translation);
   UpdateCube(cube);
@@ -202,10 +215,17 @@ ScaleCube(Cube *cube, vec3 scale) {
 
 static void
 onMouseMove(GLFWwindow* window, double x, double y) {
-  const float angle = 20.0f;
+  const float angle = 45.0f;
   const float radians = dtor(angle);
-  RotateCartesianCube(&cubes[0], x, y);
-  RotateCartesianCube(&cubes[1], -x, -y);
+  const float radius = 10.0f;
+  const float camX = sinf(radians) * radius;
+  const float camY = -cosf(radians) * radius;
+  const float camZ = cosf(radians) * radius;
+
+  camera.target.x = x;
+  camera.target.y = y;
+  camera.target.z = camZ;
+  UpdateCamera(&camera);
 }
 
 static void
@@ -222,19 +242,33 @@ main(void) {
 
   program = CreateProgram("cube.v.glsl", "cube.f.glsl");
 
-  glisy_color_init(&blue, "blue", 0);
-  glisy_color_init(&green, "green", 0);
-
   InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
-  InitializeCube(&cubes[0]);
-  InitializeCube(&cubes[1]);
 
-  MoveCube(&cubes[0], vec3(1, 1, 1));
-  MoveCube(&cubes[1], vec3(-1, -4, 1));
-  ScaleCube(&cubes[0], vec3(4, 4, 4));
-  ScaleCube(&cubes[1], vec3(2, 2, 2));
+  // init colors and cubes
+  for (int i = 0; i < numberOfCubes; ++i) {
+    glisy_color *color = &cubeColors[i];
+    printf("Initializing color %s\n", color->name);
+    glisy_color_init(color, strdup(color->name), 0);
+  }
 
-  int n = 0;
+  for (int i = 0; i < numberOfCubes; ++i) {
+    Cube *cube = &cubes[i];
+    vec3 scale = {i + 1, i + 1, i + 1};
+    vec3 translation = {1 - i, i, i + 1};
+    if (i > 0) {
+      translation.y = -sinf(i) * 50;
+    }
+
+    if (i % 2) {
+      //translation = vec3_negate(translation);
+    }
+    printf("%s\n", vec3_string(translation));
+
+    InitializeCube(cube);
+    ScaleCube(cube, scale);
+    TranslateCube(cube, translation);
+  }
+
   GL_RENDER({
     const float time = glfwGetTime();
     const float angle = time * 45.0f;
@@ -244,15 +278,16 @@ main(void) {
     const float camY = -cosf(radians) * radius;
     const float camZ = cosf(radians) * radius;
 
-    camera.target.x = camX;
-    camera.target.y = camY;
+    //camera.target.x = camX;
+    //camera.target.y = camY;
     camera.target.z = camZ;
 
     camera.aspect = width / height;
     UpdateCamera(&camera);
 
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < numberOfCubes; ++i) {
       RotateCube(&cubes[i], radians);
+      RotateCartesianCube(&cubes[i], camX, camY);
       DrawCube(&cubes[i]);
     }
 
