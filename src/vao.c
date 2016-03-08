@@ -9,8 +9,8 @@ glisy_vao_init(glisy_vao *vao) {
   if (!vao) return;
   vao->length = 0;
   vao->useElements = GL_FALSE;
-  memset(vao->attributes,
-         0, sizeof(glisy_vao_attribute) * GLISY_MAX_VAO_ATTRIBS);
+  GLsizei attrsize = sizeof(glisy_vao_attribute) * GLISY_MAX_VAO_ATTRIBS;
+  memset(vao->attributes, 0, attrsize);
   glGenVertexArrays(1, &vao->handle);
 }
 
@@ -65,8 +65,9 @@ glisy_vao_update(glisy_vao *vao, glisy_buffer *elements) {
     glisy_vao_attribute *attr = &vao->attributes[i];
 
     // ensure .normalized is true or false
-    if (GL_TRUE != attr->buffer.normalized)
+    if (GL_TRUE != attr->buffer.normalized) {
       attr->buffer.normalized = GL_FALSE;
+    }
 
     // bind current vbo
     glBindBuffer(GL_ARRAY_BUFFER, vbo[i]);

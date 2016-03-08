@@ -139,23 +139,32 @@ main(void) {
   Camera camera;
   Grid grid;
 
+  // init gl
   GL_CONTEXT_INIT();
   glfwSetScrollCallback(window, onMouseScroll);
+  glfwSetWindowUserPointer(window, &camera);
 
+  // create shader program
   program = CreateProgram("grid.v.glsl", "grid.f.glsl");
 
+  // init objects
   InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
   InitializeGrid(&grid);
 
-  glfwSetWindowUserPointer(window, &camera);
+  // configure camera
+  //camera.position.y = 1;
+  camera.target = vec3(1, 1, 1);
+  camera.fov = 45;
 
+  // bind current shader program
   glisy_program_bind(&program);
+
+  // render loop
   GL_RENDER({
     const float time = glfwGetTime();
     const float angle = time * 45.0f;
     const float radians = dtor(angle);
     const vec3 rotation = vec3(0, 1, 0);
-
     (void) mat4_rotate(camera.transform,
                        radians,
                        rotation);

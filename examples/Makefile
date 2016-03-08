@@ -1,6 +1,10 @@
 CC := gcc
 SRC := $(wildcard ../deps/*/*.c)
-TARGETS := grid cube
+
+TARGETS += grid
+TARGETS += cube
+TARGETS += bunny
+TARGETS += cube-orbit
 
 CFLAGS += -I ../include
 CFLAGS += -I ../deps
