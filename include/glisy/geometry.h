@@ -12,12 +12,11 @@
 typedef struct glisy_geometry glisy_geometry;
 struct glisy_geometry {
   glisy_vao vao;
-  glisy_vao_attribute attributes[GLISY_MAX_VAO_ATTRIBS];
-  GLuint attrlen;
   GLuint faceslen;
   glisy_buffer index;
   GLboolean dirty;
   GLenum elementsType;
+  GLenum usage;
   void *faces;
   GLboolean useElements;
   glisy_program *program;

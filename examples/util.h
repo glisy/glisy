@@ -8,8 +8,8 @@
 #include <stdio.h>
 
 #define dtor(d) d * (M_PI / 180)
-#define min(a, b) a < b ? a : b < a ? b : a
-#define max(a, b) a > b ? a : b > a ? b : a
+#define min(a, b) (a < b ? a : b < a ? b : a)
+#define max(a, b) (a > b ? a : b > a ? b : a)
 
 #define GL_CONTEXT_INIT() \
   if (!glfwInit()) return 1; \

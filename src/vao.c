@@ -9,7 +9,8 @@ glisy_vao_init(glisy_vao *vao) {
   if (!vao) return;
   vao->length = 0;
   vao->useElements = GL_FALSE;
-  memset(vao->attributes, 0, sizeof(glisy_vao_attribute) * GLISY_MAX_VAO_ATTRIBS);
+  memset(vao->attributes,
+         0, sizeof(glisy_vao_attribute) * GLISY_MAX_VAO_ATTRIBS);
   glGenVertexArrays(1, &vao->handle);
 }
 
