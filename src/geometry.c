@@ -87,8 +87,12 @@ glisy_geometry_update(glisy_geometry *geometry) {
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 geometry->indiceslen * sizeof(GLuint),
-                 geometry->indices,
+                 geometry->faceslen * (
+                   GL_UNSIGNED_SHORT == geometry->elementsType ?
+                   sizeof(GLushort) :
+                   GL_UNSIGNED_INT ? sizeof(GLuint) : 0
+                 ),
+                 geometry->faces,
                  GL_STATIC_DRAW);
   } else {
     glisy_vao_update(&geometry->vao, 0);
@@ -114,13 +118,13 @@ void
 glisy_geometry_faces(glisy_geometry *geometry,
                      GLenum type,
                      GLuint count,
-                     void *indices) {
+                     void *faces) {
 
   if (!geometry) return;
-  if (!indices) return;
+  if (!faces) return;
   geometry->elementsType = type;
-  geometry->indiceslen = count;
-  memcpy(geometry->indices, indices, sizeof(GLuint) * count);
+  geometry->faceslen = count;
+  geometry->faces = faces;
   geometry->useElements = GL_TRUE;
   geometry->dirty = GL_TRUE;
 }
@@ -159,8 +163,7 @@ glisy_geometry_draw(glisy_geometry *geometry,
   if (geometry->vao.useElements) {
     glDrawElements(mode,
                   stop - start,
-                  geometry->elementsType,
-                  0);
+                  geometry->elementsType, 0);
 
   } else {
     glDrawArrays(mode, start, stop - start);

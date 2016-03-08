@@ -15,11 +15,10 @@ struct glisy_geometry {
   glisy_vao_attribute attributes[GLISY_MAX_VAO_ATTRIBS];
   GLuint attrlen;
   GLuint faceslen;
-  GLuint indiceslen;
   glisy_buffer index;
   GLboolean dirty;
   GLenum elementsType;
-  GLuint indices[0xffffff];
+  void *faces;
   GLboolean useElements;
   glisy_program *program;
 };

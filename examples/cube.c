@@ -215,16 +215,8 @@ ScaleCube(Cube *cube, vec3 scale) {
 
 static void
 onMouseMove(GLFWwindow* window, double x, double y) {
-  const float angle = 45.0f;
-  const float radians = dtor(angle);
-  const float radius = 10.0f;
-  const float camX = sinf(radians) * radius;
-  const float camY = -cosf(radians) * radius;
-  const float camZ = cosf(radians) * radius;
-
   camera.target.x = x;
-  camera.target.y = y;
-  camera.target.z = camZ;
+  camera.target.y = -y;
   UpdateCamera(&camera);
 }
 
@@ -247,7 +239,6 @@ main(void) {
   // init colors and cubes
   for (int i = 0; i < numberOfCubes; ++i) {
     glisy_color *color = &cubeColors[i];
-    printf("Initializing color %s\n", color->name);
     glisy_color_init(color, strdup(color->name), 0);
   }
 
@@ -260,13 +251,21 @@ main(void) {
     }
 
     if (i % 2) {
-      //translation = vec3_negate(translation);
+      translation = vec3_negate(translation);
     }
-    printf("%s\n", vec3_string(translation));
 
     InitializeCube(cube);
     ScaleCube(cube, scale);
     TranslateCube(cube, translation);
+  }
+
+  {
+    double x = 0;
+    double y = 0;
+    glfwGetCursorPos(window, &x, &y);
+    camera.target.x = x;
+    camera.target.y = -y;
+    UpdateCamera(&camera);
   }
 
   GL_RENDER({
@@ -278,8 +277,6 @@ main(void) {
     const float camY = -cosf(radians) * radius;
     const float camZ = cosf(radians) * radius;
 
-    //camera.target.x = camX;
-    //camera.target.y = camY;
     camera.target.z = camZ;
 
     camera.aspect = width / height;

@@ -213,7 +213,6 @@ struct vec3 { float x; float y; float z; };
   // @TODO(werle) - hermite
   // @TODO(werle) - bezier
   // @TODO(werle) - transform
-  // @TODO(werle) - transformMat4
   // @TODO(werle) - transformQuat
   // @TODO(werle) - angle
 

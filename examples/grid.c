@@ -4,10 +4,6 @@
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 640
 
-#define DEPTH 32
-#define NUM_VERTICES (DEPTH+1)*(DEPTH+1)
-#define NUM_INDICES 2*3*DEPTH*DEPTH
-
 // model
 typedef struct Grid Grid;
 struct Grid {
@@ -23,7 +19,7 @@ struct Grid {
 
   struct {
     vec3 positions[101][101];
-    GLuint faces[2 * 100 * 101 * 2];
+    GLushort faces[2 * 100 * 101 * 2];
     GLuint length;
   } vertex;
 
@@ -52,19 +48,43 @@ static Grid grid;
 void
 InitializeGrid(Grid *grid) {
   int vertexLength = 101;
+  int facesLen = 0;
   vec3 vertices[101][101];
-  GLuint faces[2 * 100 * 101 * 2];
+  GLushort faces[2 * 100 * 101 * 2];
 
   for (int i = 0; i < 101; i++) {
     for (int j = 0; j < 101; j++) {
-      vertices[i][j].x = (j - 50) / 50.0;
-      vertices[i][j].y = (i - 50) / 50.0;
+      vertices[i][j].x = (j - 50) / 100.0;
+      vertices[i][j].z = (i - 50) / 100.0;
+      vertices[i][j].y = 0;
     }
   }
 
-  grid->position = vec3(0, 0, 0);
+  {
+    int i = 0;
+
+    // Horizontal grid lines
+    for (int y = 0; y < 101; y++) {
+      for (int x = 0; x < 100; x++) {
+        faces[i++] = y * 101 + x;
+        faces[i++] = y * 101 + x + 1;
+      }
+    }
+
+    // Vertical grid lines
+    for (int x = 0; x < 101; x++) {
+      for (int y = 0; y < 100; y++) {
+        faces[i++] = y * 101 + x;
+        faces[i++] = (y + 1) * 101 + x;
+      }
+    }
+
+    facesLen = i;
+  }
+
+  grid->position = vec3(0, 0, 1);
   grid->scale = vec3(1, 1, 1);
-  grid->vertex.length = DEPTH;
+  grid->vertex.length = 2 * 100 * 101 * 2;
   GLuint size = sizeof(vertices);
 
   glisy_vao_attribute vPosition = {
@@ -79,7 +99,6 @@ InitializeGrid(Grid *grid) {
     }
   };
 
-  printf("%d\n", size);
   memcpy(grid->vertex.positions, vertices, size);
   memcpy(grid->vertex.faces, faces, sizeof(faces));
 
@@ -99,19 +118,37 @@ InitializeGrid(Grid *grid) {
                       &grid->attributes.vPosition);
 
   glisy_geometry_faces(&grid->geometry,
-                       GL_UNSIGNED_INT,
-                       grid->vertex.length,
-                       grid->vertex.faces);
+                       GL_UNSIGNED_SHORT,
+                       facesLen,
+                       faces);
+
+  glisy_geometry_update(&grid->geometry);
   UpdateGrid(grid);
 }
 
 void
 UpdateGrid(Grid *grid) {
   mat4 model;
+  mat4 scale;
+  mat4 rotation;
+  mat4 translation;
+
   mat4_identity(model);
-  model = mat4_scale(model, grid->scale);
-  model = mat4_multiply(model, grid->rotation);
-  model = mat4_multiply(model, grid->translation);
+  mat4_identity(scale);
+  mat4_identity(rotation);
+  mat4_identity(translation);
+
+  mat4_scale(scale, grid->scale);
+
+  mat4_copy(translation, grid->translation);
+  mat4_translate(translation, grid->position);
+
+  mat4_copy(rotation, grid->rotation);
+
+  model = mat4_multiply(model, scale);
+  model = mat4_multiply(model, rotation);
+  model = mat4_multiply(model, translation);
+
   glisy_uniform_set(&grid->uModel, &model, sizeof(model));
   glisy_uniform_bind(&grid->uModel, &program);
 }
@@ -120,25 +157,8 @@ void
 DrawGrid(Grid *grid) {
   UpdateGrid(grid);
   glisy_geometry_bind(&grid->geometry, &program);
-  for (int i = 0; i < 101; i++) {
-    glisy_geometry_draw(&grid->geometry, GL_LINE_STRIP, 101 * i, grid->vertex.length);
-  }
+  glisy_geometry_draw(&grid->geometry, GL_LINES, 0, grid->vertex.length);
   glisy_geometry_unbind(&grid->geometry);
-}
-
-static void
-onMouseMove(GLFWwindow* window, double x, double y) {
-  const float angle = 45.0f;
-  const float radians = dtor(angle);
-  const float radius = 10.0f;
-  const float camX = sinf(radians) * radius;
-  const float camY = -cosf(radians) * radius;
-  const float camZ = cosf(radians) * radius;
-
-  camera.target.x = x;
-  camera.target.y = y;
-  camera.target.z = camZ;
-  UpdateCamera(&camera);
 }
 
 static void
@@ -150,26 +170,29 @@ onMouseScroll(GLFWwindow* window, double xoffset, double yoffset) {
 int
 main(void) {
   GL_CONTEXT_INIT();
+  glfwSetScrollCallback(window, onMouseScroll);
+
   program = CreateProgram("grid.v.glsl", "grid.f.glsl");
 
   InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
   InitializeGrid(&grid);
 
+  (void) mat4_rotate(camera.transform, dtor(90), vec3(0, 1, 0));
+  grid.position.y = 1;
+
   GL_RENDER({
     const float time = glfwGetTime();
     const float angle = time * 45.0f;
     const float radians = dtor(angle);
-    const float radius = 10.0f;
-    const float camX = sinf(radians) * radius;
-    const float camY = -cosf(radians) * radius;
-    const float camZ = cosf(radians) * radius;
+    const vec3 rotation = vec3(0, 1, 0);
 
-    //camera.target.x = camX;
-    //camera.target.y = camY;
-    camera.target.z = camZ;
+    (void) mat4_rotate(camera.transform,
+                       radians,
+                       rotation);
 
     camera.aspect = width / height;
     UpdateCamera(&camera);
+    DrawGrid(&grid);
   });
 
   return 0;
