@@ -152,9 +152,8 @@ main(void) {
   InitializeGrid(&grid);
 
   // configure camera
-  //camera.position.y = 1;
-  camera.target = vec3(1, 1, 1);
-  camera.fov = 45;
+  camera.position = vec3(1, 1, 1);
+  camera.fov = 25;
 
   // bind current shader program
   glisy_program_bind(&program);

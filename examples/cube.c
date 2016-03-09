@@ -23,7 +23,7 @@ struct Cube {
 // forward decl
 static void InitializeCube(Cube *cube);
 static void UpdateCube(Cube *cube);
-static void RotateCube(Cube *cube, float radians);
+static void RotateCube(Cube *cube, float radians, vec3 axis);
 
 // cube constructor
 void
@@ -62,7 +62,7 @@ InitializeCube(Cube *cube) {
     2, 3, 7, 2, 7, 6,
   };
 
-  cube->position = vec3(1, 1, 1);
+  cube->position = vec3(0, 0, 0);
   cube->faceslen = sizeof(faces) / sizeof(GLushort);
   GLuint size = sizeof(vertices);
 
@@ -115,8 +115,8 @@ DrawCube(Cube *cube) {
 }
 
 void
-RotateCube(Cube *cube, float radians) {
-  (void) mat4_rotate(cube->rotation, radians, cube->position);
+RotateCube(Cube *cube, float radians, vec3 axis) {
+  (void) mat4_rotate(cube->rotation, radians, axis);
 }
 
 int
@@ -131,16 +131,14 @@ main(void) {
   Camera camera;
   Cube cube;
 
-  // params
-  const float radius = 10.0f;
-
   // init
   GL_CONTEXT_INIT();
   program = CreateProgram("cube.v.glsl", "cube.f.glsl");
   InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
   InitializeCube(&cube);
 
-  camera.target = cube.position;
+  // move camera behind cube
+  camera.position = vec3(1, 1, 1);
 
   GL_RENDER({
     const float time = glfwGetTime();
@@ -157,8 +155,8 @@ main(void) {
     // update camera orientation
     UpdateCamera(&camera);
 
-    // rotate cube at radians angle
-    RotateCube(&cube, radians);
+    // rotate cube at radians angle in opposite direction
+    RotateCube(&cube, radians, vec3_negate(rotation));
 
     // render cube
     DrawCube(&cube);

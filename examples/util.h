@@ -96,11 +96,10 @@ UpdateCameraProjectionMatrix(Camera *camera) {
 
 void
 UpdateCameraLookAt(Camera *camera) {
-  vec3 target = vec3_transform_mat4(camera->target,
-                                    camera->transform);
-  camera->view = mat4_lookAt(target,
-                             camera->position,
-                             camera->up);
+  vec3 target = camera->target;
+  vec3 position = vec3_transform_mat4(camera->position,
+                                      camera->transform);
+  camera->view = mat4_lookAt(position, target, camera->up);
   glisy_uniform_bind(&camera->uView, 0);
   mat4_identity(camera->transform);
 }
@@ -129,7 +128,7 @@ InitializeCamera(Camera *camera, int width, int height) {
 
   camera->aspect = width / height;
   camera->near = 1.0f;
-  camera->far = 100.0f;
+  camera->far = 1000.0f;
   camera->fov = 45.0f;
 
   mat4_identity(camera->projection);
