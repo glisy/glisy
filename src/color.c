@@ -10,21 +10,21 @@ glisy_color_init(glisy_color *color, const char *name, uint32_t value) {
   uint32_t tmp;
   if (!color) return;
 
-  if (!strlen(color->name)) {
-    memset(color->name, 0, BUFSIZ);
+  if (!color->name) {
+    color->name = "";
   }
 
-  if (!strlen(color->string)) {
-    memset(color->string, 0, BUFSIZ);
+  if (!color->string) {
+    color->string = "";
   }
 
   if (name && value == 0) {
     if ('#' == name[0]) {
-      strcat(color->string, name);
+      color->string = strdup(name);
     } else if (name == strstr(name, "rgb")) {
-      strcat(color->string, name);
+      color->string = strdup(name);
     } else {
-      strcat(color->name, name);
+      color->name = strdup(name);
     }
 
     short ok = 0;

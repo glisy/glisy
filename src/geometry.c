@@ -1,4 +1,3 @@
-#include <strings.h>
 #include <glisy/program.h>
 #include <glisy/geometry.h>
 
@@ -22,11 +21,9 @@ _upsert_attr(glisy_geometry *geometry, glisy_vao_attribute *attribute) {
       if ((cursor->name && 0 == strcmp(cursor->name, attribute->name)) ||
           (!cursor->name && cursor->location == attribute->location)) {
         attribute->location = cursor->location;
-        memcpy(cursor->buffer.data,
-               attribute->buffer.data,
-               attribute->buffer.size);
 #define copy(P) cursor-> P = attribute-> P;
         copy(name);
+        copy(buffer.data);
         copy(buffer.type);
         copy(buffer.size);
         copy(buffer.usage);
@@ -99,35 +96,34 @@ glisy_geometry_update(glisy_geometry *geometry) {
   if (GL_TRUE != geometry->useElements) {
     glisy_vao_update(&geometry->vao, 0);
   } else {
+    // size of the vertex faces (faces * sizeof(elementsType))
+    GLsizei facesSize = geometry->faceslen * (
+        // assume GLushort if GL_UNSIGNED_SHORT
+        GL_UNSIGNED_SHORT == geometry->elementsType ?
+        sizeof(GLushort) :
+        // assume GLuint if GL_UNSIGNED_INT
+        GL_UNSIGNED_INT ?
+        sizeof(GLuint) :
+        // otherwise assume GL_UNSIGNED_SHORT as default
+        sizeof(GLushort));
+
     glisy_vao_update(&geometry->vao, &geometry->index);
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 // size of the vertex faces (faces * sizeof(elementsType))
-                 geometry->faceslen * (
-                   // assume GLushort if GL_UNSIGNED_SHORT
-                   GL_UNSIGNED_SHORT == geometry->elementsType ?
-                   sizeof(GLushort) :
-                   // assume GLuint if GL_UNSIGNED_INT
-                   GL_UNSIGNED_INT ?
-                   sizeof(GLuint) :
-                   // otherwise assume GL_UNSIGNED_SHORT as default
-                   sizeof(GLushort)
-                 ),
-
                  // geometry vertex faces (indices)
-                 geometry->faces,
+                 facesSize, geometry->faces,
 
                  // buffer initialization usage type that is one of:
-                 // GL_ARRAY_BUFFER,
-                 // GL_UNIFORM_BUFFER
-                 // GL_TEXTURE_BUFFER,
-                 // GL_COPY_READ_BUFFER,
-                 // GL_PIXEL_PACK_BUFFER,
-                 // GL_COPY_WRITE_BUFFER,
-                 // GL_PIXEL_UNPACK_BUFFER,
-                 // GL_ELEMENT_ARRAY_BUFFER,
-                 // GL_TRANSFORM_FEEDBACK_BUFFER,
+                 // GL_STREAM_DRAW
+                 // GL_STREAM_READ
+                 // GL_STREAM_COPY
+                 // GL_STATIC_DRAW
+                 // GL_STATIC_READ
+                 // GL_STATIC_COPY
+                 // GL_DYNAMIC_DRAW
+                 // GL_DYNAMIC_READ
+                 // GL_DYNAMIC_COPY
                  geometry->usage);
   }
 }

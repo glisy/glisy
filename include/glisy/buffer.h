@@ -14,7 +14,7 @@ struct glisy_buffer {
   GLuint size;
   GLuint usage;
   GLuint handle;
-  GLfloat data[BUFSIZ];
+  GLvoid *data;
 };
 
 /**

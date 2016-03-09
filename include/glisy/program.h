@@ -10,10 +10,8 @@
 
 typedef struct glisy_program glisy_program;
 struct glisy_program {
-
   // GL Program ID.
   GLuint id;
-
 };
 
 /**

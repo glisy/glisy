@@ -12,7 +12,7 @@ typedef struct glisy_shader glisy_shader;
 struct glisy_shader {
 
   // Shader GLSL source buffer.
-  char source[BUFSIZ];
+  char *source;
 
   // Shader source type.
   GLuint type;

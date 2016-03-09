@@ -45,6 +45,5 @@ glisy_buffer_source(glisy_buffer *buffer, GLsizei size, GLvoid *data) {
   if (!buffer) return;
   if (!data) return;
   buffer->size = size;
-  memset(buffer->data, 0, BUFSIZ);
-  memcpy(buffer->data, data, size);
+  buffer->data = data;
 }

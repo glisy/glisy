@@ -19,7 +19,7 @@ struct glisy_vao_attribute {
   const char *name;
 
   struct {
-    void *data;
+    GLvoid *data;
     GLuint type;
     GLuint size;
     GLuint usage;

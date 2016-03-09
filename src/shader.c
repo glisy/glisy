@@ -14,8 +14,7 @@ glisy_shader_init(glisy_shader *shader, GLuint type, const char *source) {
   if (shader->id == 0) return GL_FALSE;
 
   shader->type = type;
-  memset(shader->source, 0, BUFSIZ);
-  strcat(shader->source, source);
+  shader->source = strdup(source);
 
   glShaderSource(shader->id, 1, &source, 0);
   glCompileShader(shader->id);

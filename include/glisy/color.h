@@ -5,8 +5,8 @@
 
 typedef struct glisy_color glisy_color;
 struct glisy_color {
-  char name[BUFSIZ];
-  char string[BUFSIZ];
+  char *name;
+  char *string;
   double r, g, b, a;
   uint32_t value;
 };

@@ -17,7 +17,7 @@ enum {
 typedef struct glisy_uniform glisy_uniform;
 struct glisy_uniform {
   const char *name;
-  void *buffer;
+  GLvoid *buffer;
   GLuint dimension;
   GLint location;
   GLsizei size;
@@ -34,6 +34,6 @@ void
 glisy_uniform_bind(glisy_uniform *uniform, glisy_program *program);
 
 void
-glisy_uniform_set(glisy_uniform *uniform, void *data, GLsizei size);
+glisy_uniform_set(glisy_uniform *uniform, GLvoid *data, GLsizei size);
 
 #endif
