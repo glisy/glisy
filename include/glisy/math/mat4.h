@@ -402,7 +402,7 @@ struct mat4 {
  */
 
 #define mat4_perspective(fov, aspect, near, far) (mat4) ({           \
-  float f = tanf((fov / 2.0) * M_PI / 180);                          \
+  float f = tanf(glisy_radians(fov) * M_PI * 0.5 - 0.5);             \
   float nf = near - far;                                             \
   mat4 a;                                                            \
                                                                      \
