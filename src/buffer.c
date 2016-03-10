@@ -4,7 +4,7 @@
 #include <glisy/buffer.h>
 
 void
-glisy_buffer_init(glisy_buffer *buffer, GLuint target) {
+glisyBufferInit(GlisyBuffer *buffer, GLuint target) {
   if (!buffer) return;
   if (target == 0) target = GL_ARRAY_BUFFER;
   buffer->handle = 0;
@@ -12,27 +12,27 @@ glisy_buffer_init(glisy_buffer *buffer, GLuint target) {
 }
 
 void
-glisy_buffer_bind(glisy_buffer *buffer) {
+glisyBufferBind(GlisyBuffer *buffer) {
   if (!buffer) return;
   glGenBuffers(1, &buffer->handle);
   glBindBuffer(buffer->target, buffer->handle);
 }
 
 void
-glisy_buffer_unbind(glisy_buffer *buffer) {
+glisyBufferUnbind(GlisyBuffer *buffer) {
   if (!buffer) return;
   glBindBuffer(buffer->target, 0);
 }
 
 void
-glisy_buffer_dispose(glisy_buffer *buffer) {
+glisyBufferDispose(GlisyBuffer *buffer) {
   if (!buffer) return;
   glDeleteBuffers(1, &buffer->handle);
   buffer->handle = 0;
 }
 
 void
-glisy_buffer_update(glisy_buffer *buffer, GLuint usage) {
+glisyBufferUpdate(GlisyBuffer *buffer, GLuint usage) {
   if (!buffer) return;
   glBufferData(buffer->target,
                buffer->size,
@@ -41,7 +41,7 @@ glisy_buffer_update(glisy_buffer *buffer, GLuint usage) {
 }
 
 void
-glisy_buffer_source(glisy_buffer *buffer, GLsizei size, GLvoid *data) {
+glisyBufferSource(GlisyBuffer *buffer, GLsizei size, GLvoid *data) {
   if (!buffer) return;
   if (!data) return;
   buffer->size = size;

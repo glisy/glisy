@@ -3,8 +3,8 @@
 
 #include <stdlib.h>
 
-typedef struct glisy_color glisy_color;
-struct glisy_color {
+typedef struct GlisyColor GlisyColor;
+struct GlisyColor {
   char *name;
   char *string;
   double r, g, b, a;
@@ -12,11 +12,11 @@ struct glisy_color {
 };
 
 void
-glisy_color_init(glisy_color *color, const char *name, uint32_t value);
+glisyColorInit(GlisyColor *color, const char *name, uint32_t value);
 
 const char *
-glisy_color_to_string(const glisy_color color);
+glisyColorToString(const GlisyColor color);
 
 const char *
-glisy_color_to_name(const glisy_color color);
+glisyColorToName(const GlisyColor color);
 #endif

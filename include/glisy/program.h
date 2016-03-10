@@ -8,8 +8,8 @@
  * Glisy Program struct type.
  */
 
-typedef struct glisy_program glisy_program;
-struct glisy_program {
+typedef struct GlisyProgram GlisyProgram;
+struct GlisyProgram {
   // GL Program ID.
   GLuint id;
 };
@@ -19,52 +19,52 @@ struct glisy_program {
  * program param is NULL or undefined, or the program cannot properly be
  * initialized, the function returns false, otherwise it returns true.
  *
- * @param program * - pointer to a glisy_program struct.
+ * @param program * - pointer to a GlisyProgram struct.
  */
 
 GLboolean
-glisy_program_init(glisy_program *program);
+glisyProgramInit(GlisyProgram *program);
 
 /**
- * This function uses glAttachShader() to attach a glisy_shader to a glisy_program.
+ * This function uses glAttachShader() to attach a GlisyShader to a GlisyProgram.
  * It will return false if the program or shader param is NULL or undefined,
  * otherwise it returns true.
  *
- * @param program * - pointer to a glisy_program struct.
- * @param shader  * - pointer to a vertex or fragment glisy_shader.
+ * @param program * - pointer to a GlisyProgram struct.
+ * @param shader  * - pointer to a vertex or fragment GlisyShader.
  */
 
 GLboolean
-glisy_program_attach_shader(const glisy_program *program, const glisy_shader *shader);
+glisyProgramAttachShader(const GlisyProgram *program, const GlisyShader *shader);
 
 /**
  * This function uses glLinkProgram() to link attached vertex and fragment
- * glisy_shaders. If the program param is NULL or undefined, if the result of
+ * GlisyShaders. If the program param is NULL or undefined, if the result of
  * glGetProgramiv() is a failure, or if the program cannot be properly linked,
- * it will return false, otherwise it returns true. glisy_program_delete() is
+ * it will return false, otherwise it returns true. glisyProgramDelete() is
  * called to destroy the program on failure.
  *
- * @param program * - pointer to a glisy_program struct.
+ * @param program * - pointer to a GlisyProgram struct.
  */
 
 GLboolean
-glisy_program_link(glisy_program *program);
+glisyProgramLink(GlisyProgram *program);
 
 /**
  */
 
 GLboolean
-glisy_program_bind(glisy_program *program);
+glisyProgramBind(GlisyProgram *program);
 
 /**
- * This function uses glDeleteProgram() to destroy a glisy_program. If the
- * program param is NULL or undefined, or the glisy_program ID member is 0,
+ * This function uses glDeleteProgram() to destroy a GlisyProgram. If the
+ * program param is NULL or undefined, or the GlisyProgram ID member is 0,
  * false is returned, otherwise it returns true.
  *
- * @param program * - pointer to a glisy_program struct.
+ * @param program * - pointer to a GlisyProgram struct.
  */
 
 GLboolean
-glisy_program_delete(glisy_program *program);
+glisyProgramDelete(GlisyProgram *program);
 
 #endif

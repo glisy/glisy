@@ -5,7 +5,7 @@
 #include <glisy/shader.h>
 
 GLboolean
-glisy_shader_init(glisy_shader *shader, GLuint type, const char *source) {
+glisyShaderInit(GlisyShader *shader, GLuint type, const char *source) {
   GLint isCompiled = 0;
 
   if (shader == NULL) return GL_FALSE;

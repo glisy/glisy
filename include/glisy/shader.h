@@ -8,8 +8,8 @@
  * Glisy Shader structure type.
  */
 
-typedef struct glisy_shader glisy_shader;
-struct glisy_shader {
+typedef struct GlisyShader GlisyShader;
+struct GlisyShader {
 
   // Shader GLSL source buffer.
   char *source;
@@ -30,12 +30,12 @@ struct glisy_shader {
  * if glGetShaderiv() reports a failure glDeleteShader() is called to destroy
  * the shader.
  *
- * @param shader * - pointer to a glisy_shader struct.
+ * @param shader * - pointer to a GlisyShader struct.
  * @param type     - GL vertex or fragment shader type enum.
  * @param source * - pointer to a string buffer containing GLSL source.
  */
 
 GLboolean
-glisy_shader_init(glisy_shader *shader, GLuint type, const char *source);
+glisyShaderInit(GlisyShader *shader, GLuint type, const char *source);
 
 #endif

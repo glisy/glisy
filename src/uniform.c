@@ -3,7 +3,7 @@
 #include <glisy/uniform.h>
 
 void
-glisy_uniform_init(glisy_uniform *uniform,
+glisyUniformInit(GlisyUniform *uniform,
                    const char *name,
                    GLuint type,
                    GLuint dimension) {
@@ -17,7 +17,7 @@ glisy_uniform_init(glisy_uniform *uniform,
 }
 
 void
-glisy_uniform_bind(glisy_uniform *uniform, glisy_program *program) {
+glisyUniformBind(GlisyUniform *uniform, GlisyProgram *program) {
   GLint location = 0;
   GLint pid;
   if (!uniform) return;
@@ -107,7 +107,7 @@ glisy_uniform_bind(glisy_uniform *uniform, glisy_program *program) {
 }
 
 void
-glisy_uniform_set(glisy_uniform *uniform, void *data, GLsizei size) {
+glisyUniformSet(GlisyUniform *uniform, void *data, GLsizei size) {
   if (!uniform) return;
   if (!data) return;
   if (!size) return;

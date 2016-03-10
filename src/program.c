@@ -2,7 +2,7 @@
 #include <glisy/program.h>
 
 GLboolean
-glisy_program_init(glisy_program *program) {
+glisyProgramInit(GlisyProgram *program) {
   if (!program) return GL_FALSE;
 
   program->id = glCreateProgram();
@@ -12,7 +12,7 @@ glisy_program_init(glisy_program *program) {
 }
 
 GLboolean
-glisy_program_attach_shader(const glisy_program *program, const glisy_shader *shader) {
+glisyProgramAttachShader(const GlisyProgram *program, const GlisyShader *shader) {
   if (!program) return GL_FALSE;
   if (!shader)  return GL_FALSE;
 
@@ -23,7 +23,7 @@ glisy_program_attach_shader(const glisy_program *program, const glisy_shader *sh
 }
 
 GLboolean
-glisy_program_link(glisy_program *program) {
+glisyProgramLink(GlisyProgram *program) {
   GLint isLinked = 0;
 
   if (!program) return GL_FALSE;
@@ -44,7 +44,7 @@ glisy_program_link(glisy_program *program) {
       free(infoLog);
     }
 
-    glisy_program_delete(program);
+    glisyProgramDelete(program);
     return GL_FALSE;
   }
 
@@ -52,10 +52,10 @@ glisy_program_link(glisy_program *program) {
 }
 
 GLboolean
-glisy_program_bind(glisy_program *program) {
+glisyProgramBind(GlisyProgram *program) {
   if (!program) return GL_FALSE;
   if (!program->id) {
-    if (!glisy_program_link(program)) return GL_FALSE;
+    if (!glisyProgramLink(program)) return GL_FALSE;
   }
 
   glUseProgram(program->id);
@@ -63,7 +63,7 @@ glisy_program_bind(glisy_program *program) {
 }
 
 GLboolean
-glisy_program_delete(glisy_program *program) {
+glisyProgramDelete(GlisyProgram *program) {
   if (!program) return GL_FALSE;
   if (program->id == 0) return GL_FALSE;
 

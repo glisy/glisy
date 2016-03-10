@@ -5,29 +5,29 @@
 #include <glisy/buffer.h>
 
 void
-glisy_vao_init(glisy_vao *vao) {
+glisyVAOInit(GlisyVAO *vao) {
   if (!vao) return;
   vao->length = 0;
   vao->useElements = GL_FALSE;
-  GLsizei attrsize = sizeof(glisy_vao_attribute) * GLISY_MAX_VAO_ATTRIBS;
+  GLsizei attrsize = sizeof(GlisyVAOAttribute) * GLISY_MAX_VAO_ATTRIBS;
   memset(vao->attributes, 0, attrsize);
   glGenVertexArrays(1, &vao->handle);
 }
 
 void
-glisy_vao_bind(glisy_vao *vao) {
+glisyVAOBind(GlisyVAO *vao) {
   if (!vao) return;
   glBindVertexArray(vao->handle);
 }
 
 void
-glisy_vao_unbind(glisy_vao *vao) {
+glisyVAOUnbind(GlisyVAO *vao) {
   if (!vao) return;
   glBindVertexArray(0);
 }
 
 void
-glisy_vao_dispose(glisy_vao *vao) {
+glisyVAODispose(GlisyVAO *vao) {
   if (!vao) return;
   glDeleteVertexArrays(1, &vao->handle);
   vao->handle = 0;
@@ -36,7 +36,7 @@ glisy_vao_dispose(glisy_vao *vao) {
 }
 
 void
-glisy_vao_update(glisy_vao *vao, glisy_buffer *elements) {
+glisyVAOUpdate(GlisyVAO *vao, GlisyBuffer *elements) {
   if (!vao) return;
 
   // number of bound attributes for this VAO
@@ -46,14 +46,14 @@ glisy_vao_update(glisy_vao *vao, glisy_buffer *elements) {
   GLuint vbo[length];
 
   // bind vao
-  glisy_vao_bind(vao);
+  glisyVAOBind(vao);
 
   // init vbo
   glGenBuffers(length, vbo);
 
   // bind elements if given
   if (elements) {
-    glisy_buffer_bind(elements);
+    glisyBufferBind(elements);
     vao->useElements= GL_TRUE;
   } else {
     vao->useElements= GL_FALSE;
@@ -62,7 +62,7 @@ glisy_vao_update(glisy_vao *vao, glisy_buffer *elements) {
   // bind vao attributes
   for (int i = 0; i < length; ++i) {
     GLuint location = i;
-    glisy_vao_attribute *attr = &vao->attributes[i];
+    GlisyVAOAttribute *attr = &vao->attributes[i];
 
     // ensure .normalized is true or false
     if (GL_TRUE != attr->buffer.normalized) {
@@ -91,7 +91,7 @@ glisy_vao_update(glisy_vao *vao, glisy_buffer *elements) {
 }
 
 GLuint
-glisy_vao_push(glisy_vao *vao, glisy_vao_attribute *attr) {
+glisyVAOPush(GlisyVAO *vao, GlisyVAOAttribute *attr) {
   if (!vao) return GL_FALSE;
   if (!attr) return GL_FALSE;
 
@@ -104,21 +104,21 @@ glisy_vao_push(glisy_vao *vao, glisy_vao_attribute *attr) {
 }
 
 GLuint
-glisy_vao_pop(glisy_vao *vao) {
+glisyVAOPop(GlisyVAO *vao) {
   if (!vao) return GL_FALSE;
-  //@TODO(jwerle): implement glisy_vao_pop
+  //@TODO(jwerle): implement this
   return 0;
 }
 
 GLuint
-glisy_vao_splice(glisy_vao *vao, GLint start, GLuint count) {
+glisyVAOSplice(GlisyVAO *vao, GLint start, GLuint count) {
   if (!vao) return GL_FALSE;
-  //@TODO(jwerle): implement glisy_vao_splice
+  //@TODO(jwerle): implement this
   return 0;
 }
 
 GLuint
-glisy_vao_set(glisy_vao *vao, GLuint location, glisy_vao_attribute *attr) {
+glisyVAOSet(GlisyVAO *vao, GLuint location, GlisyVAOAttribute *attr) {
   if (!vao) return GL_FALSE;
   if (!attr) return GL_FALSE;
   GLuint max = GLISY_MAX_VAO_ATTRIBS;
@@ -133,14 +133,14 @@ glisy_vao_set(glisy_vao *vao, GLuint location, glisy_vao_attribute *attr) {
 }
 
 GLuint
-glisy_vao_remove(glisy_vao *vao, GLuint location) {
+glisyVAORemove(GlisyVAO *vao, GLuint location) {
   if (!vao) return GL_FALSE;
-  //@TODO(jwerle): implement glisy_vao_remove
+  //@TODO(jwerle): implement GlisyVAO_remove
   return 0;
 }
 
 void
-glisy_vao_attribute_bind(glisy_vao_attribute *attribute) {
+glisyVAOAttributeBind(GlisyVAOAttribute *attribute) {
   if (!attribute) return;
   GLfloat data[4];
   GLuint dimension = attribute->buffer.dimension;

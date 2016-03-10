@@ -14,8 +14,8 @@ enum {
   GLISY_UNIFORM_INT,
 };
 
-typedef struct glisy_uniform glisy_uniform;
-struct glisy_uniform {
+typedef struct GlisyUniform GlisyUniform;
+struct GlisyUniform {
   const char *name;
   GLvoid *buffer;
   GLuint dimension;
@@ -25,15 +25,15 @@ struct glisy_uniform {
 };
 
 void
-glisy_uniform_init(glisy_uniform *uniform,
+glisyUniformInit(GlisyUniform *uniform,
                    const char *name,
                    GLuint type,
                    GLuint dimension);
 
 void
-glisy_uniform_bind(glisy_uniform *uniform, glisy_program *program);
+glisyUniformBind(GlisyUniform *uniform, GlisyProgram *program);
 
 void
-glisy_uniform_set(glisy_uniform *uniform, GLvoid *data, GLsizei size);
+glisyUniformSet(GlisyUniform *uniform, GLvoid *data, GLsizei size);
 
 #endif

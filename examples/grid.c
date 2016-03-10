@@ -15,8 +15,8 @@
 // model
 typedef struct Grid Grid;
 struct Grid {
-  glisy_geometry geometry;
-  glisy_uniform uModel;
+  GlisyGeometry geometry;
+  GlisyUniform uModel;
   mat4 translation;
   vec3 position;
 };
@@ -63,7 +63,7 @@ InitializeGrid(Grid *grid) {
 
   grid->position = vec3(0, 0, 0);
 
-  glisy_vao_attribute vPosition = {
+  GlisyVAOAttribute vPosition = {
     .buffer = {
       .data = (void *) vertices,
       .type = GL_FLOAT,
@@ -77,21 +77,21 @@ InitializeGrid(Grid *grid) {
 
   mat4_identity(grid->translation);
 
-  glisy_uniform_init(&grid->uModel,
-                     "uModel",
-                     GLISY_UNIFORM_MATRIX, 4);
+  glisyUniformInit(&grid->uModel,
+                   "uModel",
+                   GLISY_UNIFORM_MATRIX, 4);
 
-  glisy_geometry_init(&grid->geometry);
-  glisy_geometry_attr(&grid->geometry,
-                      "vPosition",
-                      &vPosition);
+  glisyGeometryInit(&grid->geometry);
+  glisyGeometryAttr(&grid->geometry,
+                    "vPosition",
+                    &vPosition);
 
-  glisy_geometry_faces(&grid->geometry,
-                       GL_UNSIGNED_SHORT,
-                       GRID_FACES_LENGTH,
-                       faces);
+  glisyGeometryFaces(&grid->geometry,
+                     GL_UNSIGNED_SHORT,
+                     GRID_FACES_LENGTH,
+                     faces);
 
-  glisy_geometry_update(&grid->geometry);
+  glisyGeometryUpdate(&grid->geometry);
   UpdateGrid(grid);
 }
 
@@ -106,17 +106,16 @@ UpdateGrid(Grid *grid) {
   model = mat4_translate(translation, grid->position);
   model = mat4_multiply(model, translation);
 
-  glisy_uniform_set(&grid->uModel, &model, sizeof(model));
-  glisy_uniform_bind(&grid->uModel, 0);
+  glisyUniformSet(&grid->uModel, &model, sizeof(model));
+  glisyUniformBind(&grid->uModel, 0);
 }
 
 void
 DrawGrid(Grid *grid) {
   UpdateGrid(grid);
-  glisy_geometry_bind(&grid->geometry, 0);
-  glisy_geometry_draw(&grid->geometry,
-                      GL_LINES, 0, GRID_FACES_LENGTH);
-  glisy_geometry_unbind(&grid->geometry);
+  glisyGeometryBind(&grid->geometry, 0);
+  glisyGeometryDraw(&grid->geometry, GL_LINES, 0, GRID_FACES_LENGTH);
+  glisyGeometryUnbind(&grid->geometry);
 }
 
 static void
@@ -133,7 +132,7 @@ main(void) {
   GLFWwindow *window;
 
   // glisy
-  glisy_program program;
+  GlisyProgram program;
 
   // objects
   Camera camera;
@@ -153,15 +152,15 @@ main(void) {
 
   // configure camera
   camera.position = vec3(1, 1, 1);
-  camera.fov = 25;
+  camera.fov = 22;
 
   // bind current shader program
-  glisy_program_bind(&program);
+  glisyProgramBind(&program);
 
   // render loop
   GL_RENDER({
     const float time = glfwGetTime();
-    const float angle = time * 45.0f;
+    const float angle = time * 5.0f;
     const float radians = dtor(angle);
     const vec3 rotation = vec3(0, 1, 0);
     (void) mat4_rotate(camera.transform,

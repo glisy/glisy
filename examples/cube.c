@@ -8,8 +8,8 @@
 typedef struct Cube Cube;
 struct Cube {
   // glisy
-  glisy_geometry geometry;
-  glisy_uniform uModel;
+  GlisyGeometry geometry;
+  GlisyUniform uModel;
 
   // gl
   vec3 position;
@@ -41,17 +41,17 @@ InitializeCube(Cube *cube) {
   };
 
   // init color
-  glisy_color color;
-  glisy_color_init(&color, "blue", 0);
+  GlisyColor color;
+  glisyColorInit(&color, "blue", 0);
 
   // init uniforms
-  glisy_uniform uColor;
-  glisy_uniform_init(&uColor, "uColor", GLISY_UNIFORM_VECTOR, 3);
-  glisy_uniform_init(&cube->uModel, "uModel", GLISY_UNIFORM_MATRIX, 4);
+  GlisyUniform uColor;
+  glisyUniformInit(&uColor, "uColor", GLISY_UNIFORM_VECTOR, 3);
+  glisyUniformInit(&cube->uModel, "uModel", GLISY_UNIFORM_MATRIX, 4);
 
   // set uniforms
-  glisy_uniform_set(&uColor, &vec3(color.r, color.g, color.b), sizeof(vec3));
-  glisy_uniform_bind(&uColor, 0);
+  glisyUniformSet(&uColor, &vec3(color.r, color.g, color.b), sizeof(vec3));
+  glisyUniformBind(&uColor, 0);
 
   const GLushort faces[] = {
     0, 1, 3, 0, 3, 2,
@@ -66,7 +66,7 @@ InitializeCube(Cube *cube) {
   cube->faceslen = sizeof(faces) / sizeof(GLushort);
   GLuint size = sizeof(vertices);
 
-  glisy_vao_attribute vPosition = {
+  GlisyVAOAttribute vPosition = {
     .buffer = {
       .data = (void *) vertices,
       .type = GL_FLOAT,
@@ -83,16 +83,15 @@ InitializeCube(Cube *cube) {
   mat4_identity(cube->rotation);
 
   // init vao attributes
-  glisy_geometry_init(&cube->geometry);
-  glisy_geometry_attr(&cube->geometry, "vPosition", &vPosition);
-
-  glisy_geometry_faces(&cube->geometry,
+  glisyGeometryInit(&cube->geometry);
+  glisyGeometryAttr(&cube->geometry, "vPosition", &vPosition);
+  glisyGeometryFaces(&cube->geometry,
                        GL_UNSIGNED_SHORT,
                        cube->faceslen,
                        (void *) faces);
 
   // update geometry with attributes and faces
-  glisy_geometry_update(&cube->geometry);
+  glisyGeometryUpdate(&cube->geometry);
 
   UpdateCube(cube);
 }
@@ -102,16 +101,16 @@ UpdateCube(Cube *cube) {
   mat4 model;
   mat4_identity(model);
   model = mat4_multiply(model, cube->rotation);
-  glisy_uniform_set(&cube->uModel, &model, sizeof(model));
-  glisy_uniform_bind(&cube->uModel, 0);
+  glisyUniformSet(&cube->uModel, &model, sizeof(model));
+  glisyUniformBind(&cube->uModel, 0);
 }
 
 void
 DrawCube(Cube *cube) {
   UpdateCube(cube);
-  glisy_geometry_bind(&cube->geometry, 0);
-  glisy_geometry_draw(&cube->geometry, GL_TRIANGLES, 0, cube->faceslen);
-  glisy_geometry_unbind(&cube->geometry);
+  glisyGeometryBind(&cube->geometry, 0);
+  glisyGeometryDraw(&cube->geometry, GL_TRIANGLES, 0, cube->faceslen);
+  glisyGeometryUnbind(&cube->geometry);
 }
 
 void
@@ -125,7 +124,7 @@ main(void) {
   GLFWwindow *window;
 
   // glisy
-  glisy_program program;
+  GlisyProgram program;
 
   // objects
   Camera camera;

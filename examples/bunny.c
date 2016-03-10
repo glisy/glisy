@@ -11,7 +11,7 @@
 // model
 typedef struct Bunny Bunny;
 struct Bunny {
-  glisy_geometry geometry;
+  GlisyGeometry geometry;
   int faceslen;
 };
 
@@ -21,7 +21,7 @@ static void InitializeBunny(Bunny *bunny);
 // bunny constructor
 void
 InitializeBunny(Bunny *bunny) {
-  glisy_vao_attribute vPosition = {
+  GlisyVAOAttribute vPosition = {
     .buffer = {
       .data = (void *) StanfordBunny.positions,
       .type = GL_FLOAT,
@@ -35,21 +35,21 @@ InitializeBunny(Bunny *bunny) {
 
   bunny->faceslen = 3 * STANFORD_BUNNY_CELLS_COUNT;
 
-  glisy_geometry_init(&bunny->geometry);
-  glisy_geometry_attr(&bunny->geometry, "vPosition", &vPosition);
-  glisy_geometry_faces(&bunny->geometry,
+  glisyGeometryInit(&bunny->geometry);
+  glisyGeometryAttr(&bunny->geometry, "vPosition", &vPosition);
+  glisyGeometryFaces(&bunny->geometry,
                        GL_UNSIGNED_SHORT,
                        bunny->faceslen,
                        (void *) StanfordBunny.cells);
 
-  glisy_geometry_update(&bunny->geometry);
+  glisyGeometryUpdate(&bunny->geometry);
 }
 
 void
 DrawBunny(Bunny *bunny) {
-  glisy_geometry_bind(&bunny->geometry, 0);
-  glisy_geometry_draw(&bunny->geometry, GL_TRIANGLES, 0, bunny->faceslen);
-  glisy_geometry_unbind(&bunny->geometry);
+  glisyGeometryBind(&bunny->geometry, 0);
+  glisyGeometryDraw(&bunny->geometry, GL_TRIANGLES, 0, bunny->faceslen);
+  glisyGeometryUnbind(&bunny->geometry);
 }
 
 static void
@@ -66,7 +66,7 @@ main(void) {
   GLFWwindow *window;
 
   // glisy
-  glisy_program program;
+  GlisyProgram program;
 
   // objects
   Camera camera;
@@ -84,12 +84,12 @@ main(void) {
   camera.position = vec3(1, 4, 10);
   camera.target = vec3(1, 1, 1);
 
-  glisy_program_bind(&program);
+  glisyProgramBind(&program);
   GL_RENDER({
     const float time = glfwGetTime();
     const float angle = time * 22.5f;
     const float radians = dtor(angle);
-    const vec3 rotation = vec3(1, 1, 1);
+    const vec3 rotation = vec3(0, 1, 0);
     (void) mat4_rotate(camera.transform,
                        radians,
                        rotation);

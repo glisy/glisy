@@ -44,23 +44,23 @@
 
 #define LoadShader(path) fs_read(path)
 #define CreateProgram(vertex, fragment) ({ \
-  glisy_program program; \
-  glisy_shader vertexShader; \
-  glisy_shader fragmentShader; \
-  glisy_program_init(&program); \
-  glisy_shader_init(&vertexShader, GL_VERTEX_SHADER, LoadShader(vertex)); \
-  glisy_shader_init(&fragmentShader, GL_FRAGMENT_SHADER, LoadShader(fragment)); \
-  glisy_program_attach_shader(&program, &vertexShader); \
-  glisy_program_attach_shader(&program, &fragmentShader); \
-  glisy_program_link(&program); \
-  glisy_program_bind(&program); \
+  GlisyProgram program; \
+  GlisyShader vertexShader; \
+  GlisyShader fragmentShader; \
+  glisyProgramInit(&program); \
+  glisyShaderInit(&vertexShader, GL_VERTEX_SHADER, LoadShader(vertex)); \
+  glisyShaderInit(&fragmentShader, GL_FRAGMENT_SHADER, LoadShader(fragment)); \
+  glisyProgramAttachShader(&program, &vertexShader); \
+  glisyProgramAttachShader(&program, &fragmentShader); \
+  glisyProgramLink(&program); \
+  glisyProgramBind(&program); \
   (program); \
 })
 
 typedef struct Camera Camera;
 struct Camera {
-  glisy_uniform uProjection;
-  glisy_uniform uView;
+  GlisyUniform uProjection;
+  GlisyUniform uView;
 
   mat4 projection;
   mat4 transform;
@@ -88,10 +88,10 @@ UpdateCameraProjectionMatrix(Camera *camera) {
                                         camera->aspect,
                                         camera->near,
                                         camera->far);
-  glisy_uniform_set(&camera->uProjection,
+  glisyUniformSet(&camera->uProjection,
                     &camera->projection,
                     sizeof(camera->projection));
-  glisy_uniform_bind(&camera->uProjection, 0);
+  glisyUniformBind(&camera->uProjection, 0);
 }
 
 void
@@ -100,7 +100,7 @@ UpdateCameraLookAt(Camera *camera) {
   vec3 position = vec3_transform_mat4(camera->position,
                                       camera->transform);
   camera->view = mat4_lookAt(position, target, camera->up);
-  glisy_uniform_bind(&camera->uView, 0);
+  glisyUniformBind(&camera->uView, 0);
   mat4_identity(camera->transform);
 }
 
@@ -112,7 +112,7 @@ UpdateCamera(Camera *camera) {
   camera->orientation.right =
     vec3_normalize(vec3_cross(camera->up, camera->orientation.direction));
 
-  glisy_uniform_set(&camera->uView,
+  glisyUniformSet(&camera->uView,
                     &camera->view,
                     sizeof(camera->view));
 
@@ -135,11 +135,11 @@ InitializeCamera(Camera *camera, int width, int height) {
   mat4_identity(camera->transform);
   mat4_identity(camera->view);
 
-  glisy_uniform_init(&camera->uProjection,
+  glisyUniformInit(&camera->uProjection,
                      "uProjection",
                      GLISY_UNIFORM_MATRIX, 4);
 
-  glisy_uniform_init(&camera->uView,
+  glisyUniformInit(&camera->uView,
                      "uView",
                      GLISY_UNIFORM_MATRIX, 4);
 

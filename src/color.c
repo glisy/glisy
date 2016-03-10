@@ -5,7 +5,7 @@
 #include <glisy/color.h>
 
 void
-glisy_color_init(glisy_color *color, const char *name, uint32_t value) {
+glisyColorInit(GlisyColor *color, const char *name, uint32_t value) {
   rgba_t rgba;
   uint32_t tmp;
   if (!color) return;
@@ -41,7 +41,7 @@ glisy_color_init(glisy_color *color, const char *name, uint32_t value) {
 }
 
 const char *
-glisy_color_to_name(const glisy_color color) {
+glisyColorToName(const GlisyColor color) {
   if (strlen(color.name)) return strdup(color.name);
   if (strlen(color.string)) return strdup(color.string);
   rgba_t rgba = (rgba_t) { color.r, color.g, color.b, color.a };
@@ -51,7 +51,7 @@ glisy_color_to_name(const glisy_color color) {
 }
 
 const char *
-glisy_color_to_string(const glisy_color color) {
+glisyColorToString(const GlisyColor color) {
   if (strlen(color.string)) return strdup(color.string);
   rgba_t rgba = (rgba_t) { color.r, color.g, color.b, color.a };
   rgba_to_string(rgba, (char *) color.string, BUFSIZ);
