@@ -5,7 +5,24 @@
 extern "C" {
 #endif
 
-#define GLISY_EXPORT __attribute__((visibility("default")))
+#ifdef _WIN32
+  // Windows - set up dll import/export decorators.
+# if defined(BUILDING_GLISY_SHARED)
+    // Building shared library.
+#   define GLISY_EXPORT __declspec(dllexport)
+# elif defined(USING_GLISY_SHARED)
+    // Using shared library.
+#   define GLISY_EXPORT __declspec(dllimport)
+# else
+    // Building static library
+#   define GLISY_EXPORT
+# endif
+#elif __GNUC__ >= 4
+# define GLISY_EXPORT __attribute__((visibility("default")))
+#else
+  // nothing
+# define GLISY_EXPORT
+#endif
 
 /**
  * Glisy API.
