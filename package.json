@@ -10,7 +10,8 @@
   ],
   "install": "make install",
   "dependencies": {
-    "clibs/rgba": "0.0.1",
-    "jwerle/fs.c": "0.1.2"
+    "jwerle/fs.c": "0.1.2",
+    "littlstar/libsop": "0.0.1",
+    "glisy/color": "0.0.2"
   }
 }

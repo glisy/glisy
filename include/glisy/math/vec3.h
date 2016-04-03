@@ -162,7 +162,7 @@ struct vec3 { float x; float y; float z; };
 
 #define vec3_normalize(a) (vec3) ({                        \
   float len = (a.x * a.x) + (a.y * a.y) + (a.z * a.z);     \
-  vec3 vec;                                                \
+  vec3 vec = {0, 0, 0};                                    \
   if (len > 0) {                                           \
     len = (1/sqrt(len));                                   \
     vec.x = (a.x * len);                                   \
