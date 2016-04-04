@@ -1,0 +1,10 @@
+{
+  "name": "glisy",
+  "version": "0.0.1",
+  "repo": "glisy/gl",
+  "description": "#include headers for OpenGL without the suck",
+  "keywords": ["open", "gl", "header"],
+  "src": [
+    "include/glisy/gl.h"
+  ]
+}

@@ -4,6 +4,10 @@
 #include <glisy/gl.h>
 #include <glisy/shader.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Glisy Program struct type.
  */
@@ -51,6 +55,7 @@ GLboolean
 glisyProgramLink(GlisyProgram *program);
 
 /**
+ * Bind program and use program. This function calls glUseProgram internally.
  */
 
 GLboolean
@@ -66,5 +71,9 @@ glisyProgramBind(GlisyProgram *program);
 
 GLboolean
 glisyProgramDelete(GlisyProgram *program);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

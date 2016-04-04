@@ -5,6 +5,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * vec4 struct type.
  */
@@ -19,4 +23,7 @@ struct vec4 { float x; float y; float z; float w; };
 #define vec4(x, y, z, w) (vec4) {x, y, z, w}
 #define vec4_create() vec4(0, 0, 0, 0)
 
+#ifdef __cplusplus
+}
+#endif
 #endif

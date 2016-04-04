@@ -42,8 +42,8 @@ glisyColorInit(GlisyColor *color, const char *name, uint32_t value) {
 
 const char *
 glisyColorToName(const GlisyColor color) {
-  if (strlen(color.name)) return strdup(color.name);
-  if (strlen(color.string)) return strdup(color.string);
+  if (color.name && strlen(color.name)) return strdup(color.name);
+  if (color.string && strlen(color.string)) return strdup(color.string);
   rgba_t rgba = (rgba_t) { color.r, color.g, color.b, color.a };
   rgba_to_string(rgba, (char *) color.name, BUFSIZ);
   rgba_to_string(rgba, (char *) color.string, BUFSIZ);

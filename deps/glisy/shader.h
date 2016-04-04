@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <glisy/gl.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Glisy Shader structure type.
  */
@@ -37,5 +41,9 @@ struct GlisyShader {
 
 GLboolean
 glisyShaderInit(GlisyShader *shader, GLuint type, const char *source);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

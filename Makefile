@@ -2,10 +2,12 @@
 PROJECT_NAME ?= glisy
 
 ## Source files
-SRC += $(wildcard src/*.c)
+SRC := $(wildcard src/*.c)
 
 ## Dependency source files
-SRC += $(wildcard deps/*/*.c)
+SRC += $(wildcard deps/glisy/*/*.c)
+SRC += $(wildcard deps/rgba/*.c)
+SRC += $(wildcard deps/sop/*.c)
 
 ## Source objects
 OBJS := $(SRC:.c=.o)
@@ -30,6 +32,18 @@ $(TARGET_STATIC): $(OBJS)
 ## Compiles object files
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
+
+## Installs library into system
+.PHONY: install
+install: $(TARGET_STATIC)
+	$(CP) -r include/* $(PREFIX)/include/
+	$(CP)  $(TARGET_STATIC) $(PREFIX)/lib
+
+## Uninstalls library from system
+.PHONY: uninstall
+uninstall:
+	$(RM) -r $(PREFIX)/include/$(PROJECT_NAME)
+	$(RM) $(PREFIX)/lib/$(TARGET_STATIC)
 
 ## Cleans project directory
 .PHONY: clean

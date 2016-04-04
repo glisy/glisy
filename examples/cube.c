@@ -66,17 +66,13 @@ InitializeCube(Cube *cube) {
   cube->faceslen = sizeof(faces) / sizeof(GLushort);
   GLuint size = sizeof(vertices);
 
-  GlisyVAOAttribute vPosition = {
-    .buffer = {
-      .data = (void *) vertices,
-      .type = GL_FLOAT,
-      .size = size,
-      .usage = GL_STATIC_DRAW,
-      .offset = 0,
-      .stride = 0,
-      .dimension = 3,
-    }
-  };
+  GlisyVAOAttribute vPosition;
+  memset(&vPosition, 0, sizeof(vPosition));
+  vPosition.buffer.data = (void *) vertices;
+  vPosition.buffer.type = GL_FLOAT;
+  vPosition.buffer.size = size;
+  vPosition.buffer.usage = GL_STATIC_DRAW;
+  vPosition.buffer.dimension = 3;
 
   // init matrices
   mat4_identity(cube->transform);

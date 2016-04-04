@@ -1,12 +1,16 @@
 #ifndef GLISY_VEC2_H
 #define GLISY_VEC2_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <time.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-#include <glisy/math/vec3.h>
-#include <glisy/math/mat2.h>
+#include <glisy/vec3.h>
+#include <glisy/mat2.h>
 
 /**
  * vec2 struct type.
@@ -228,4 +232,7 @@ struct vec2 { float x; float y; };
   (strdup(str));                                 \
 })
 
+#ifdef __cplusplus
+}
+#endif
 #endif

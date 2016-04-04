@@ -1,6 +1,10 @@
 #ifndef GLISY_MAT2_H
 #define GLISY_MAT2_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * mat2 struct type.
  */
@@ -189,4 +193,7 @@ struct mat2 {
   (strdup(str));                                 \
 })
 
+#ifdef __cplusplus
+}
+#endif
 #endif

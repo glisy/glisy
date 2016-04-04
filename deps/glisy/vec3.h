@@ -5,6 +5,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * vec3 struct type.
  */
@@ -291,4 +295,7 @@ struct vec3 { float x; float y; float z; };
   (strdup(str));                                      \
 })
 
+#ifdef __cplusplus
+}
+#endif
 #endif

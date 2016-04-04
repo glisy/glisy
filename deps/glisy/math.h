@@ -7,9 +7,8 @@
 
 #define glisy_radians(degrees) degrees * GLISY_PI_OVER_180
 
-#include <glisy/math/quat.h>
-#include <glisy/math/euler.h>
-#include <glisy/math/vector.h>
-#include <glisy/math/matrix.h>
+#include <glisy/matrix.h>
+#include <glisy/vector.h>
+#include <glisy/euler.h>
 
 #endif

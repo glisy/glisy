@@ -5,6 +5,10 @@
 #include <glisy/buffer.h>
 #include <glisy/program.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Glisy Geometry struct type.
  */
@@ -134,4 +138,8 @@ glisyGeometryDraw(GlisyGeometry *geometry,
                     GLuint mode,
                     GLuint start,
                     GLuint stop);
+
+#ifdef __cplusplus
+}
+#endif
 #endif

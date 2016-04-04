@@ -1,3 +1,4 @@
+#include <string.h>
 #include <glisy/program.h>
 #include <glisy/geometry.h>
 

@@ -4,6 +4,10 @@
 #include <glisy/gl.h>
 #include <glisy/program.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
   GLISY_UNIFORM_VECTOR = 1,
   GLISY_UNIFORM_MATRIX,
@@ -36,4 +40,7 @@ glisyUniformBind(GlisyUniform *uniform, GlisyProgram *program);
 void
 glisyUniformSet(GlisyUniform *uniform, GLvoid *data, GLsizei size);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

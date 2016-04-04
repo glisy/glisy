@@ -2,8 +2,11 @@
 #define GLISY_VAO_H
 
 #include <glisy/gl.h>
-#include <glisy/math.h>
 #include <glisy/buffer.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef GLISY_MAX_VAO_ATTRIBS
 #define GLISY_MAX_VAO_ATTRIBS 0xff
@@ -171,4 +174,7 @@ glisyVAORemove(GlisyVAO *vao, GLuint location);
 void
 glisyVAOAttributeBind(GlisyVAOAttribute *attribute);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

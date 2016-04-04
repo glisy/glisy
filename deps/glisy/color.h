@@ -3,6 +3,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct GlisyColor GlisyColor;
 struct GlisyColor {
   char *name;
@@ -19,4 +23,8 @@ glisyColorToString(const GlisyColor color);
 
 const char *
 glisyColorToName(const GlisyColor color);
+
+#ifdef __cplusplus
+}
+#endif
 #endif

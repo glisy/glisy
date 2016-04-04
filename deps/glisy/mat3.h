@@ -1,6 +1,10 @@
 #ifndef GLISY_MAT3_H
 #define GLISY_MAT3_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * mat3 struct type.
  */
@@ -295,4 +299,7 @@ struct mat3 {
   (strdup(str));                                               \
 })
 
+#ifdef __cplusplus
+}
+#endif
 #endif

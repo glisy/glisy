@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <glisy/gl.h>
 #include <glisy/vao.h>
 #include <glisy/buffer.h>
@@ -54,9 +55,9 @@ glisyVAOUpdate(GlisyVAO *vao, GlisyBuffer *elements) {
   // bind elements if given
   if (elements) {
     glisyBufferBind(elements);
-    vao->useElements= GL_TRUE;
+    vao->useElements = GL_TRUE;
   } else {
-    vao->useElements= GL_FALSE;
+    vao->useElements = GL_FALSE;
   }
 
   // bind vao attributes

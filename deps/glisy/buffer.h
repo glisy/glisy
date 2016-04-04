@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <glisy/gl.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Glisy Buffer struct type.
  */
@@ -92,4 +96,7 @@ glisyBufferUpdate(GlisyBuffer *buffer, GLuint usage);
 void
 glisyBufferSource(GlisyBuffer *buffer, GLsizei size, GLvoid *data);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

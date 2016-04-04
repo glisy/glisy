@@ -1,5 +1,5 @@
 CC := gcc
-SRC := $(wildcard ../deps/*/*.c)
+SRC := $(wildcard ../deps/fs/*.c)
 
 TARGETS += grid
 TARGETS += cube

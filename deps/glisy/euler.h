@@ -1,7 +1,11 @@
 #ifndef GLISY_EULER_H
 #define GLISY_EULER_H
 
-#include "vec3.h"
+#include <glisy/vec3.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * euler type
@@ -21,4 +25,8 @@ typedef vec3 euler;
  */
 
 #define euler_clone(e) ((euler) {e.x, e.y, e.z})
+
+#ifdef __cplusplus
+}
+#endif
 #endif
