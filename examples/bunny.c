@@ -72,7 +72,8 @@ main(void) {
   Camera camera;
   Bunny bunny;
 
-  GL_CONTEXT_INIT();
+  GLFW_SHELL_CONTEXT_INIT(3, 2);
+  GLFW_SHELL_WINDOW_INIT(window, WINDOW_WIDTH, WINDOW_HEIGHT);
   glfwSetScrollCallback(window, onMouseScroll);
 
   program = CreateProgram("bunny.v.glsl", "bunny.f.glsl");
@@ -85,7 +86,7 @@ main(void) {
   camera.target = vec3(1, 1, 1);
 
   glisyProgramBind(&program);
-  GL_RENDER({
+  GLFW_SHELL_RENDER(window, {
     const float time = glfwGetTime();
     const float angle = time * 22.5f;
     const float radians = dtor(angle);

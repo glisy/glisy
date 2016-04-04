@@ -132,7 +132,6 @@ main(void) {
   GLFW_SHELL_CONTEXT_INIT(3, 2);
   GLFW_SHELL_WINDOW_INIT(window, width, height);
   program = CreateProgram("cube.v.glsl", "cube.f.glsl");
-  printf("fo\n");
   InitializeCamera(&camera, width, height);
   InitializeCube(&cube);
 

@@ -139,7 +139,8 @@ main(void) {
   Grid grid;
 
   // init gl
-  GL_CONTEXT_INIT();
+  GLFW_SHELL_CONTEXT_INIT(3, 2);
+  GLFW_SHELL_WINDOW_INIT(window, WINDOW_WIDTH, WINDOW_HEIGHT);
   glfwSetScrollCallback(window, onMouseScroll);
   glfwSetWindowUserPointer(window, &camera);
 
@@ -158,7 +159,7 @@ main(void) {
   glisyProgramBind(&program);
 
   // render loop
-  GL_RENDER({
+  GLFW_SHELL_RENDER(window, {
     const float time = glfwGetTime();
     const float angle = time * 5.0f;
     const float radians = dtor(angle);
