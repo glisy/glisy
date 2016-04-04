@@ -127,15 +127,19 @@ main(void) {
   Cube cube;
 
   // init
-  GL_CONTEXT_INIT();
+  int width = WINDOW_WIDTH;
+  int height = WINDOW_HEIGHT;
+  GLFW_SHELL_CONTEXT_INIT(3, 2);
+  GLFW_SHELL_WINDOW_INIT(window, width, height);
   program = CreateProgram("cube.v.glsl", "cube.f.glsl");
-  InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
+  printf("fo\n");
+  InitializeCamera(&camera, width, height);
   InitializeCube(&cube);
 
   // move camera behind cube
   camera.position = vec3(1, 1, 1);
 
-  GL_RENDER({
+  GLFW_SHELL_RENDER(window, {
     const float time = glfwGetTime();
     const float angle = time * 45.0f;
     const float radians = dtor(angle);

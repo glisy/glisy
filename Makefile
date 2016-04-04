@@ -5,7 +5,7 @@ PROJECT_NAME ?= glisy
 SRC := $(wildcard src/*.c)
 
 ## Dependency source files
-SRC += $(wildcard deps/glisy/*/*.c)
+SRC += $(wildcard deps/glisy/*.c)
 SRC += $(wildcard deps/rgba/*.c)
 SRC += $(wildcard deps/sop/*.c)
 
@@ -55,8 +55,8 @@ clean:
 ## Compiles and runs all test
 .PHONY: test
 test:
-	$(MAKE) -C $@
+	if test -d test; then $(MAKE) -C $@; fi
 
 .PHONY: test/clean
 test/clean:
-	$(MAKE) clean -C test
+	if test -d test; then $(MAKE) clean -C test; fi

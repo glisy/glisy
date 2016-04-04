@@ -2,45 +2,14 @@
 #define GLISY_EXAMPLE_UTIL_H
 
 // common example includes
+#include <glfw-shell/glfw-shell.h>
 #include <glisy/glisy.h>
-#include <GLFW/glfw3.h>
 #include <fs/fs.h>
 #include <stdio.h>
 
 #define dtor(d) d * (M_PI / 180)
 #define min(a, b) (a < b ? a : b < a ? b : a)
 #define max(a, b) (a > b ? a : b > a ? b : a)
-
-#define GL_CONTEXT_INIT() \
-  if (!glfwInit()) return 1; \
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); \
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); \
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); \
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2); \
-  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME, 0, 0); \
-  if (!window) { return glfwTerminate(), 1; } \
-  glfwMakeContextCurrent(window); \
-  printf("OpenGL %s, GLSL %s\n", \
-      glGetString(GL_VERSION), \
-      glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-#define GL_RENDER(cb) { \
-  while (!glfwWindowShouldClose(window)) { \
-    int width; \
-    int height; \
-    glfwGetFramebufferSize(window, &width, &height); \
-    glViewport(0, 0, width, height); \
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); \
-    glDepthMask(GL_TRUE);\
-    glEnable(GL_DEPTH_TEST); \
-    glEnable(GL_CULL_FACE); \
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); \
-    { cb } \
-    glfwSwapBuffers(window); \
-    glfwPollEvents(); \
-  } \
-  glfwTerminate(); \
-}
 
 #define LoadShader(path) fs_read(path)
 #define CreateProgram(vertex, fragment) ({ \

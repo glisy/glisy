@@ -1,7 +1,7 @@
 {
   "name": "glisy",
   "version": "0.0.1",
-  "repo": "littlstar/glisy",
+  "repo": "glisy/glisy",
   "description": "Higher level operations for OpenGLES in C(99)",
   "keywords": [
     "opengl",
@@ -23,5 +23,8 @@
     "glisy/math": "master",
     "glisy/vao": "master",
     "glisy/gl": "master"
+  },
+  "development": {
+    "glisy/glfw-shell": "master"
   }
 }
