@@ -74,7 +74,7 @@ glisyGeometryUpdate(GlisyGeometry *geometry) {
     // name string is set then bind the attribute location
     // to the program by name.
     if (attr->name) {
-      if (geometry->program || geometry->program->id) {
+      if (geometry->program && geometry->program->id) {
         pid = geometry->program->id;
       } else {
         glGetIntegerv(GL_CURRENT_PROGRAM, &pid);

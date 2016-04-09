@@ -37,6 +37,7 @@ $(TARGET_STATIC): $(OBJS)
 .PHONY: install
 install: $(TARGET_STATIC)
 	$(CP) -r include/* $(PREFIX)/include/
+	$(CP) -r deps/glisy/*.h $(PREFIX)/include/glisy
 	$(CP)  $(TARGET_STATIC) $(PREFIX)/lib
 
 ## Uninstalls library from system

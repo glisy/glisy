@@ -15,6 +15,7 @@
     "glisy/geometry": "master",
     "glisy/program": "master",
     "glisy/uniform": "master",
+    "glisy/texture": "master",
     "glisy/buffer": "master",
     "glisy/shader": "master",
     "glisy/color": "master",
