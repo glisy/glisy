@@ -1,12 +1,14 @@
 #version 400
 
-uniform mat4 uProjection;
-uniform mat4 uModel;
-uniform mat4 uView;
+precision mediump float;
 
-in vec3 vPosition;
+uniform mat4 projection;
+uniform mat4 model;
+uniform mat4 view;
+
+in vec3 position;
 
 void
 main(void) {
-  gl_Position = uProjection * uModel * uView * vec4(vPosition, 1.0);
+  gl_Position = projection *  view * model * vec4(position, 1.0);
 }

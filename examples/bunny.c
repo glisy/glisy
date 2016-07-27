@@ -1,3 +1,6 @@
+#include <glisy/geometry.h>
+#include <glisy/camera.h>
+#include <glisy/math.h>
 #include "util.h"
 #include "bunny.h"
 
@@ -15,13 +18,24 @@ struct Bunny {
   int faceslen;
 };
 
+static mat4 transform;
+static float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
+static float near = 1.0;
+static float far = 1000.0;
+static float fov = M_PI / 2.0;
+
+static GlisyProgram program;
+static GlisyCamera camera;
+static GLFWwindow *window;
+static Bunny bunny;
+
 // forward decl
 static void InitializeBunny(Bunny *bunny);
 
 // bunny constructor
 void
 InitializeBunny(Bunny *bunny) {
-  GlisyVAOAttribute vPosition = {
+  GlisyVAOAttribute position = {
     .buffer = {
       .data = (void *) StanfordBunny.positions,
       .type = GL_FLOAT,
@@ -36,7 +50,7 @@ InitializeBunny(Bunny *bunny) {
   bunny->faceslen = 3 * STANFORD_BUNNY_CELLS_COUNT;
 
   glisyGeometryInit(&bunny->geometry);
-  glisyGeometryAttr(&bunny->geometry, "vPosition", &vPosition);
+  glisyGeometryAttr(&bunny->geometry, "position", &position);
   glisyGeometryFaces(&bunny->geometry,
                        GL_UNSIGNED_SHORT,
                        bunny->faceslen,
@@ -48,55 +62,55 @@ InitializeBunny(Bunny *bunny) {
 void
 DrawBunny(Bunny *bunny) {
   glisyGeometryBind(&bunny->geometry, 0);
-  glisyGeometryDraw(&bunny->geometry, GL_TRIANGLES, 0, bunny->faceslen);
+  glisyGeometryDraw(&bunny->geometry, GL_POINTS, 0, bunny->faceslen);
   glisyGeometryUnbind(&bunny->geometry);
 }
 
 static void
 onMouseScroll(GLFWwindow* window, double xoffset, double yoffset) {
-  Camera *camera = (Camera *) glfwGetWindowUserPointer(window);
-  camera->fov += yoffset;
-  camera->fov = min(MAX_FOV, max(camera->fov, MIN_FOV));
-  UpdateCamera(camera);
+  fov += yoffset;
+  fov = min(MAX_FOV, max(fov, MIN_FOV));
 }
 
 int
 main(void) {
-  // glfw
-  GLFWwindow *window;
 
-  // glisy
-  GlisyProgram program;
-
-  // objects
-  Camera camera;
-  Bunny bunny;
-
+  // init gl
   GLFW_SHELL_CONTEXT_INIT(3, 2);
   GLFW_SHELL_WINDOW_INIT(window, WINDOW_WIDTH, WINDOW_HEIGHT);
   glfwSetScrollCallback(window, onMouseScroll);
-
-  program = CreateProgram("bunny.v.glsl", "bunny.f.glsl");
-
-  InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
-  InitializeBunny(&bunny);
   glfwSetWindowUserPointer(window, &camera);
 
-  camera.position = vec3(1, 4, 10);
-  camera.target = vec3(1, 1, 1);
+  // init shader program
+  program = CreateProgram("bunny.v.glsl", "bunny.f.glsl");
+
+  // init object
+  InitializeBunny(&bunny);
+
+  // bind current shader program
+  glisyProgramBind(&program);
+
+  // configure camera
+  glisyCameraInitialize(&camera);
+  transform = mat4_identity(mat4());
+  fov = M_PI / 2.0;
+  camera.position = vec3(0, 6, -10);
+  UpdateCamera(&camera, &program, transform, fov, aspect, near, far);
+
 
   glisyProgramBind(&program);
   GLFW_SHELL_RENDER(window, {
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
     const float time = glfwGetTime();
     const float angle = time * 22.5f;
     const float radians = dtor(angle);
     const vec3 rotation = vec3(0, 1, 0);
-    (void) mat4_rotate(camera.transform,
-                       radians,
-                       rotation);
+    (void) mat4_rotate(transform, radians, rotation);
 
-    camera.aspect = width / height;
-    UpdateCamera(&camera);
+    aspect = (float) width / (float) height;
+    UpdateCamera(&camera, &program, transform, fov, aspect, near, far);
     DrawBunny(&bunny);
   });
 

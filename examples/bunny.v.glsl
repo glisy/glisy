@@ -1,14 +1,14 @@
 #version 400
 
 precision mediump float;
-uniform mat4 uProjection;
-uniform mat4 uView;
 
-in vec3 vPosition;
-out vec3 mColor;
+uniform mat4 projection;
+uniform mat4 view;
 
-void
-main(void) {
-  mColor = vec3(vPosition);
-  gl_Position = uProjection * uView * vec4(vPosition, 1.0);
+in vec3 position;
+out vec3 color;
+
+void main(void) {
+  color = vec3(position);
+  gl_Position = projection * view * vec4(position, 1.0);
 }

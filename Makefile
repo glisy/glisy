@@ -7,7 +7,6 @@ SRC := $(wildcard src/*.c)
 ## Dependency source files
 SRC += $(wildcard deps/glisy/*.c)
 SRC += $(wildcard deps/rgba/*.c)
-SRC += $(wildcard deps/sop/*.c)
 
 ## Source objects
 OBJS := $(SRC:.c=.o)
@@ -48,16 +47,6 @@ uninstall:
 
 ## Cleans project directory
 .PHONY: clean
-clean: test/clean
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(TARGET_STATIC)
-
-## Compiles and runs all test
-.PHONY: test
-test:
-	if test -d test; then $(MAKE) -C $@; fi
-
-.PHONY: test/clean
-test/clean:
-	if test -d test; then $(MAKE) clean -C test; fi

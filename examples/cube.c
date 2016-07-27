@@ -1,3 +1,7 @@
+#include <glisy/geometry.h>
+#include <glisy/camera.h>
+#include <glisy/color.h>
+#include <glisy/math.h>
 #include "util.h"
 
 #define WINDOW_NAME "CubeExample"
@@ -9,7 +13,7 @@ typedef struct Cube Cube;
 struct Cube {
   // glisy
   GlisyGeometry geometry;
-  GlisyUniform uModel;
+  GlisyUniform model;
 
   // gl
   vec3 position;
@@ -19,6 +23,17 @@ struct Cube {
   // vao
   int faceslen;
 };
+
+static mat4 transform;
+static float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
+static float near = 1.0;
+static float far = 1000.0;
+static float fov = M_PI / 2.0;
+static Cube cube;
+
+static GlisyProgram program;
+static GlisyCamera camera;
+static GLFWwindow *window;
 
 // forward decl
 static void InitializeCube(Cube *cube);
@@ -45,13 +60,13 @@ InitializeCube(Cube *cube) {
   glisyColorInit(&color, "blue", 0);
 
   // init uniforms
-  GlisyUniform uColor;
-  glisyUniformInit(&uColor, "uColor", GLISY_UNIFORM_VECTOR, 3);
-  glisyUniformInit(&cube->uModel, "uModel", GLISY_UNIFORM_MATRIX, 4);
+  GlisyUniform ucolor;
+  glisyUniformInit(&ucolor, "color", GLISY_UNIFORM_VECTOR, 3);
+  glisyUniformInit(&cube->model, "model", GLISY_UNIFORM_MATRIX, 4);
 
   // set uniforms
-  glisyUniformSet(&uColor, &vec3(color.r, color.g, color.b), sizeof(vec3));
-  glisyUniformBind(&uColor, 0);
+  glisyUniformSet(&ucolor, &vec3(color.r, color.g, color.b), sizeof(vec3));
+  glisyUniformBind(&ucolor, 0);
 
   const GLushort faces[] = {
     0, 1, 3, 0, 3, 2,
@@ -66,13 +81,13 @@ InitializeCube(Cube *cube) {
   cube->faceslen = sizeof(faces) / sizeof(GLushort);
   GLuint size = sizeof(vertices);
 
-  GlisyVAOAttribute vPosition;
-  memset(&vPosition, 0, sizeof(vPosition));
-  vPosition.buffer.data = (void *) vertices;
-  vPosition.buffer.type = GL_FLOAT;
-  vPosition.buffer.size = size;
-  vPosition.buffer.usage = GL_STATIC_DRAW;
-  vPosition.buffer.dimension = 3;
+  GlisyVAOAttribute position;
+  memset(&position, 0, sizeof(position));
+  position.buffer.data = (void *) vertices;
+  position.buffer.type = GL_FLOAT;
+  position.buffer.size = size;
+  position.buffer.usage = GL_STATIC_DRAW;
+  position.buffer.dimension = 3;
 
   // init matrices
   mat4_identity(cube->transform);
@@ -80,7 +95,7 @@ InitializeCube(Cube *cube) {
 
   // init vao attributes
   glisyGeometryInit(&cube->geometry);
-  glisyGeometryAttr(&cube->geometry, "vPosition", &vPosition);
+  glisyGeometryAttr(&cube->geometry, "position", &position);
   glisyGeometryFaces(&cube->geometry,
                        GL_UNSIGNED_SHORT,
                        cube->faceslen,
@@ -97,8 +112,8 @@ UpdateCube(Cube *cube) {
   mat4 model;
   mat4_identity(model);
   model = mat4_multiply(model, cube->rotation);
-  glisyUniformSet(&cube->uModel, &model, sizeof(model));
-  glisyUniformBind(&cube->uModel, 0);
+  glisyUniformSet(&cube->model, &model, sizeof(model));
+  glisyUniformBind(&cube->model, 0);
 }
 
 void
@@ -116,47 +131,37 @@ RotateCube(Cube *cube, float radians, vec3 axis) {
 
 int
 main(void) {
-  // glfw
-  GLFWwindow *window;
 
-  // glisy
-  GlisyProgram program;
-
-  // objects
-  Camera camera;
-  Cube cube;
-
-  // init
-  int width = WINDOW_WIDTH;
-  int height = WINDOW_HEIGHT;
+  // init gl
   GLFW_SHELL_CONTEXT_INIT(3, 2);
-  GLFW_SHELL_WINDOW_INIT(window, width, height);
+  GLFW_SHELL_WINDOW_INIT(window, WINDOW_WIDTH, WINDOW_HEIGHT);
+  glfwSetWindowUserPointer(window, &camera);
+
+  // create shader program
   program = CreateProgram("cube.v.glsl", "cube.f.glsl");
-  InitializeCamera(&camera, width, height);
+
+  // init objects
   InitializeCube(&cube);
 
-  // move camera behind cube
-  camera.position = vec3(1, 1, 1);
+  // bind current shader program
+  glisyProgramBind(&program);
+
+  // configure camera
+  glisyCameraInitialize(&camera);
+  transform = mat4_identity(mat4());
+  camera.position = vec3(0, 0, -2);
+  UpdateCamera(&camera, &program, transform, fov, aspect, near, far);
 
   GLFW_SHELL_RENDER(window, {
     const float time = glfwGetTime();
     const float angle = time * 45.0f;
     const float radians = dtor(angle);
     const vec3 rotation = vec3(0, 1, 0);
-    (void) mat4_rotate(camera.transform,
-                       radians,
-                       rotation);
 
-    // handle resize
-    camera.aspect = width / height;
+    aspect = (float) width / (float) height;
 
-    // update camera orientation
-    UpdateCamera(&camera);
-
-    // rotate cube at radians angle in opposite direction
+    UpdateCamera(&camera, &program, transform, fov, aspect, near, far);
     RotateCube(&cube, radians, vec3_negate(rotation));
-
-    // render cube
     DrawCube(&cube);
   });
 

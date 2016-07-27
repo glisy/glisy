@@ -1,3 +1,6 @@
+#include <glisy/geometry.h>
+#include <glisy/camera.h>
+#include <glisy/math.h>
 #include "util.h"
 
 #define WINDOW_NAME "GridExample"
@@ -16,10 +19,21 @@
 typedef struct Grid Grid;
 struct Grid {
   GlisyGeometry geometry;
-  GlisyUniform uModel;
-  mat4 translation;
+  GlisyUniform model;
   vec3 position;
+  vec3 scale;
 };
+
+static mat4 transform;
+static float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
+static float near = 1.0;
+static float far = 1000.0;
+static float fov = M_PI / 2.0;
+
+static GlisyProgram program;
+static GlisyCamera camera;
+static GLFWwindow *window;
+static Grid grid;
 
 // forward decl
 static void InitializeGrid(Grid *grid);
@@ -62,6 +76,7 @@ InitializeGrid(Grid *grid) {
   }
 
   grid->position = vec3(0, 0, 0);
+  grid->scale = vec3(1, 1, 1);
 
   GlisyVAOAttribute vPosition = {
     .buffer = {
@@ -75,17 +90,9 @@ InitializeGrid(Grid *grid) {
     }
   };
 
-  mat4_identity(grid->translation);
-
-  glisyUniformInit(&grid->uModel,
-                   "uModel",
-                   GLISY_UNIFORM_MATRIX, 4);
-
+  glisyUniformInit(&grid->model, "model", GLISY_UNIFORM_MATRIX, 4);
   glisyGeometryInit(&grid->geometry);
-  glisyGeometryAttr(&grid->geometry,
-                    "vPosition",
-                    &vPosition);
-
+  glisyGeometryAttr(&grid->geometry, "position", &vPosition);
   glisyGeometryFaces(&grid->geometry,
                      GL_UNSIGNED_SHORT,
                      GRID_FACES_LENGTH,
@@ -97,17 +104,13 @@ InitializeGrid(Grid *grid) {
 
 void
 UpdateGrid(Grid *grid) {
-  mat4 model;
-  mat4 translation;
+  mat4 model = mat4_identity(mat4());
 
-  mat4_identity(model);
-  mat4_identity(translation);
+  model = mat4_translate(model, grid->position);
+  model = mat4_scale(model, grid->scale);
 
-  model = mat4_translate(translation, grid->position);
-  model = mat4_multiply(model, translation);
-
-  glisyUniformSet(&grid->uModel, &model, sizeof(model));
-  glisyUniformBind(&grid->uModel, 0);
+  glisyUniformSet(&grid->model, &model, sizeof(model));
+  glisyUniformBind(&grid->model, &program);
 }
 
 void
@@ -120,23 +123,12 @@ DrawGrid(Grid *grid) {
 
 static void
 onMouseScroll(GLFWwindow* window, double xoffset, double yoffset) {
-  Camera *camera = (Camera *) glfwGetWindowUserPointer(window);
-  camera->fov += yoffset;
-  camera->fov = min(MAX_FOV, max(camera->fov, MIN_FOV));
-  UpdateCamera(camera);
+  fov += yoffset;
+  fov = min(MAX_FOV, max(fov, MIN_FOV));
 }
 
 int
 main(void) {
-  // glfw
-  GLFWwindow *window;
-
-  // glisy
-  GlisyProgram program;
-
-  // objects
-  Camera camera;
-  Grid grid;
 
   // init gl
   GLFW_SHELL_CONTEXT_INIT(3, 2);
@@ -148,28 +140,31 @@ main(void) {
   program = CreateProgram("grid.v.glsl", "grid.f.glsl");
 
   // init objects
-  InitializeCamera(&camera, WINDOW_WIDTH, WINDOW_HEIGHT);
   InitializeGrid(&grid);
-
-  // configure camera
-  camera.position = vec3(1, 1, 1);
-  camera.fov = 22;
+  grid.scale = vec3(32, 32, 32);
 
   // bind current shader program
   glisyProgramBind(&program);
 
+  // configure camera
+  glisyCameraInitialize(&camera);
+  transform = mat4_identity(mat4());
+  camera.position = vec3(0, 0.5, -1);
+  UpdateCamera(&camera, &program, transform, fov, aspect, near, far);
+
   // render loop
   GLFW_SHELL_RENDER(window, {
+    glEnable(GL_DEPTH_TEST);
+
     const float time = glfwGetTime();
     const float angle = time * 5.0f;
     const float radians = dtor(angle);
     const vec3 rotation = vec3(0, 1, 0);
-    (void) mat4_rotate(camera.transform,
-                       radians,
-                       rotation);
+    (void) mat4_rotate(transform, radians, rotation);
 
-    camera.aspect = width / height;
-    UpdateCamera(&camera);
+    aspect = (float) width / (float) height;
+
+    UpdateCamera(&camera, &program, transform, fov, aspect, near, far);
     DrawGrid(&grid);
   });
 

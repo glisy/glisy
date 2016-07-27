@@ -8,24 +8,24 @@
     "gl",
     "glsl"
   ],
-  "src": [
-    "include/glisy/glisy.h"
-  ],
+  "src": [ ],
   "dependencies": {
     "glisy/geometry": "master",
     "glisy/program": "master",
     "glisy/uniform": "master",
     "glisy/texture": "master",
+    "glisy/camera": "master",
     "glisy/buffer": "master",
     "glisy/shader": "master",
     "glisy/color": "master",
     "glisy/math": "master",
+    "glisy/ease": "master",
     "glisy/vao": "master",
     "glisy/gl": "master"
   },
   "development": {
-    "littlstar/sop": "0.0.1",
-    "jwerle/fs.c": "0.1.2",
+    "littlstar/sop": "master",
+    "jwerle/fs.c": "master",
     "glisy/glfw-shell": "master"
   }
 }
