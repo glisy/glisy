@@ -1,8 +1,0 @@
-{
-  "name": "sop",
-  "version": "0.0.1",
-  "repo": "littlstar/libsop",
-  "description": "Simple OBJ File Format Parser written in C99",
-  "keywords": ["obj", "parser", "opengl", "graphics"],
-  "src": ["include/sop/sop.h", "src/sop.c"]
-}
